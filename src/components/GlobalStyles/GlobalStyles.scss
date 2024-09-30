@@ -1,0 +1,43 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+html {
+    font-family: Inter, sans-serif;
+    text-decoration: none;
+    scroll-behavior: smooth;
+}
+:root{
+   --ImpressiveColors: #F79321;
+   --BackgrountColors1: #003C71;
+   --BackgrountColors2: #26BED6;
+   --BackgrountColors3: #FFFFFF;
+   --BackgrountColors4: #F9F9F9;
+
+
+   --TextColor1: #FFFFFF;
+   --TextColor2: #000000; 
+   --TextColor5: #929292;
+   --TextColor3: #26BED6;   
+   --TextColor4: #FE0505;   
+
+   --BackgroundColorInput: #929292;
+   --BorderColor: #26BED6;
+   --BorderColor1: #D9D9D9;
+   --BorderColor2: #000000;
+
+}
+
+a{
+    text-decoration: none;
+}
+
+.backgroundColor {
+    background-color: var(--BackgrountColors1);
+}
+.backgroundColor1 {
+    background-color: var(--BackgrountColors1);
+}

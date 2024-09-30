@@ -1,13 +1,14 @@
-import Home from "../pages/Admin/Home";
 import ListRoom from "../pages/Admin/Room/Index";
 import RoomType from "../pages/Admin/RoomType/Index";
+import HomeCustomer from "../pages/Cusstomer/Home";
 import Login from "../pages/Cusstomer/Login";
+import Home from '../pages/Admin/Home';
 
 
 // Route sử dụng cho khách hàng
 const pulicRouter = [
     {
-        path: "/", component: "Home",
+        path: "/", component: HomeCustomer,
     },
     {
         path: "/login", component: Login,
@@ -36,7 +37,7 @@ const privateRouter = [
 
 const adminRoute = [
     {
-        path: "/admin", component: Home,
+        path: "/admin", component: Home ,
     },
     {
         path: "/admin/list-room", component: ListRoom,

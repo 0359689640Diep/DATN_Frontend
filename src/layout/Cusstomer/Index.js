@@ -1,18 +1,17 @@
+import Footer from "./Footer";
+import Headers from "./Header";
+import Slibar from './Slibar';
+
 export default function LayoutCustomer({ children }) {
     return (
-        <div>
-            <header>
-                <h1>Header</h1>
-
-            </header>
+        <div style={{ paddingLeft: 0, fontFamily: 'signika-negative, sans-serif' }}>
+            <Headers/>
+            <Slibar/>
             <div>
 
                 {children}
             </div>
-            <footer>
-                <h1>Footer</h1>
-
-            </footer>
+            <Footer/>
         </div>
     );
 }
