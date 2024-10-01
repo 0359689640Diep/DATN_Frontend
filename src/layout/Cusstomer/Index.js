@@ -7,8 +7,7 @@ export default function LayoutCustomer({ children }) {
         <div style={{ paddingLeft: 0, fontFamily: 'signika-negative, sans-serif' }}>
             <Headers/>
             <Slibar/>
-            <div>
-
+            <div style={{padding: "1% 17%"}}>
                 {children}
             </div>
             <Footer/>

@@ -48,6 +48,7 @@ const Footer = () => {
                     <div className="col">
                         <div className={`${cx("map")}`}>
                             <iframe
+                                title="Google Maps Location"
                                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d232.71653642094844!2d105.7521977699397!3d21.054098969584103!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x313454e5d3b6429b%3A0x8f5fcabcc38c88ef!2zM1EzMitQUkgsIFBow7pjIERp4buFbiwgQuG6r2MgVOG7qyBMacOqbSwgSMOgIE7hu5lpLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1727712355217!5m2!1svi!2s"
                                 width="300"
                                 height="250"
@@ -62,7 +63,7 @@ const Footer = () => {
             </div>
         </footer>
     );
-    
+
 }
 
 export default Footer;
