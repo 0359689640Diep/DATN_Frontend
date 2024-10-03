@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { images } from "../../asses";
 import className from "../../components/ClassName";
 import style from "./style.scss";
+import { AuthContext } from "../../pages/Authentication/AuthContext";
 
 const Headers = () => {
     const token = localStorage.getItem("accessToken");
     const [hiden, setHiden] = useState("d-none");
-
+    const { setShowModalLogin } = useContext(AuthContext);
+    
     const handleClick = () => {
         if (hiden === "d-none") {
             setHiden("d-block");
@@ -40,8 +42,8 @@ const Headers = () => {
                     {
                         token === null || token === "undefined" ?
                             <div className="col d-flex justify-content-end align-items-center">
-                                <a href="/"><button type="button" className={`${cx("button")} btn ms-2 px-4 py-1`}>Đăng nhập</button></a>
-                                <a href="/"><button type="button" className={`${cx("button")} btn ms-2 px-4 py-1`}>Đăng ký</button></a>
+                                <button type="button" onClick={() => setShowModalLogin(true)} className={`${cx("button")} btn ms-2 py-1`}>Đăng nhập</button>
+                                <button type="button" onClick={() => setShowModalLogin(true)} className={`${cx("button")} btn ms-2 py-1`}>Đăng ký</button>
                             </div> :
                             <div className={`${cx("person")} col`}>
                                 <div onClick={handleClick} className={`${cx("title")} d-flex justify-content-end align-items-center position-relative`}>

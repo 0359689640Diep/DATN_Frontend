@@ -9,6 +9,9 @@ const ModalAdd = (props) => {
 
     const [formData, setFormData] = useState({
         type: "",
+        price_per_night: "",
+        defaul_people: "",
+        description: "",
         images: []
     });
     const [errors, setErrors] = useState({}); // State lưu lỗi
@@ -75,6 +78,8 @@ const ModalAdd = (props) => {
         e.preventDefault();
         // Xác thực toàn bộ form trước khi submit
         const { error } = ValidateRoomType.validate(formData, { abortEarly: false });
+        console.log(error);
+
         if (error) {
             const newErrors = error.details.reduce((acc, curr) => {
                 acc[curr.path[0]] = curr.message;
@@ -87,10 +92,13 @@ const ModalAdd = (props) => {
             // Tạo đối tượng FormData
             const formDataToSubmit = new FormData();
             formDataToSubmit.append('type', formData.type);
+            formDataToSubmit.append('price_per_night', formData.price_per_night);
+            formDataToSubmit.append('defaul_people', formData.defaul_people);
+            formDataToSubmit.append('description', formData.description);
             formData.images.forEach((image, index) => {
                 formDataToSubmit.append(`images[${index}]`, image); // Đính kèm file ảnh
             });
-            
+
 
             const response = await postRoomType(formDataToSubmit); // Gửi formData
 
@@ -133,6 +141,20 @@ const ModalAdd = (props) => {
                         </div>
                         <div className="col-md-6">
                             <div className="mb-3">
+                                <label htmlFor="price_per_night" className="form-label">Số tiền cho 1 đêm</label>
+                                <input value={formData.price_per_night} type="number" className="form-control" name='price_per_night' id="price_per_night" onChange={handleChange} />
+                                {errors.price_per_night && <div className="text-danger">{errors.price_per_night}</div>}
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                            <div className="mb-3">
+                                <label htmlFor="defaul_people" className="form-label">Số người mặc định</label>
+                                <input value={formData.defaul_people} type="number" className="form-control" name='defaul_people' id="defaul_people" onChange={handleChange} />
+                                {errors.defaul_people && <div className="text-danger">{errors.defaul_people}</div>}
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                            <div className="mb-3">
                                 <label htmlFor="images" className="form-label">Ảnh</label>
                                 <input onChange={handleChange} type="file" className="form-control" multiple name='images' id="images" />
                                 {errors.images && <div className="text-danger">{errors.images}</div>}
@@ -158,6 +180,12 @@ const ModalAdd = (props) => {
                                         </button>
                                     </div>
                                 ))}
+                            </div>
+                        </div>
+                        <div className="col-md-12">
+                            <div className="form-floating">
+                                <textarea onChange={handleChange} style = {{height: "140px"}} className="form-control" placeholder="Viết mô tả của bạn vềf loại phòng này" name="description" ></textarea>
+                                <label htmlFor="floatingTextarea2">Mô tả </label>
                             </div>
                         </div>
 

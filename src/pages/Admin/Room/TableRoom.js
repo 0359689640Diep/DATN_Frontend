@@ -9,8 +9,6 @@ const TableRoom = ({ data, dataRoom, handleModalEdit, handleDelete}) => {
                 <tr>
                     <th scope="col" className="text-center">STT</th>
                     <th scope="col">Số phòng</th>
-                    <th scope="col">Tiền cho 1 đêm</th>
-                    <th scope="col">Số người mặc định</th>
                     <th scope="col">Loại phòng</th>
                     <th scope="col">Trạng thái</th>
                     <th scope="col" className="text-center">Hành động</th>
@@ -28,9 +26,8 @@ const TableRoom = ({ data, dataRoom, handleModalEdit, handleDelete}) => {
                         <tr key={index}>
                             <td className="text-center">{index + 1}</td>
                             <td>{item.number}</td>
-                            <td>{item.price_per_night}</td>
-                            <td>{item.defaul_people}</td>
-                            <td>{item.room_type.type}</td>
+
+                            <td>{item.room_type?.type ?? ""}</td>
                             <td>
                                 <p style={{ color: item.status.color }}>{item.status.name}</p>
                             </td>

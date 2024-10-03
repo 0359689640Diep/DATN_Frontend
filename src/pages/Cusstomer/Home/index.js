@@ -78,7 +78,7 @@ const HomeCustomer = () => {
                                 <img src={image.image_url} alt={image.description} />
                                 <div>
                                     <h3>{item.type}</h3>
-                                    <p>Phòng được thiết kế với 2 nguời lớn 1 trẻ em đầy đủ tiện nghi khi sử dụng</p>
+                                    <p>{item.description ?? ""}</p>
                                     <span>Giá: {item.price_per_night ?? 0} đ / đêm</span>
                                     <div className="d-flex justify-content-center">
                                         <button type="button" className="btn">Đăng ký ngay</button>

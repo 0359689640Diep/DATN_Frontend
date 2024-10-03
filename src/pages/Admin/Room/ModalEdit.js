@@ -10,8 +10,6 @@ const ModalEdit = (props) => {
     const [id, setId] = useState(0);
     const [formData, setFormData] = useState({
         number: "",
-        price_per_night: "",
-        defaul_people: "",
         room_type_id: "",
         status_id: "",
     })
@@ -21,8 +19,6 @@ const ModalEdit = (props) => {
         if (dataEdit) {
             setFormData({
                 number: dataEdit.number || "",
-                price_per_night: dataEdit.price_per_night || "",
-                defaul_people: dataEdit.defaul_people || "",
                 room_type_id: dataEdit.room_type_id || "",
                 status_id: dataEdit.status_id || "",
 
@@ -81,7 +77,7 @@ const ModalEdit = (props) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { error } = ValidateRoom.validate(formData, { abortEarly: false });
-
+        console.log(error);
         if (error) {
             const newErrors = error.details.reduce((acc, curr) => {
                 acc[curr.path[0]] = curr.message;
@@ -97,8 +93,6 @@ const ModalEdit = (props) => {
                     handleClose();
                     setFormData({
                         number: "",
-                        price_per_night: "",
-                        defaul_people: "",
                         room_type_id: "",
                         status_id: "",
                     });
@@ -144,20 +138,6 @@ const ModalEdit = (props) => {
                                 <label htmlFor="number" className="form-label">Số phòng</label>
                                 <input value={formData.number} type="number" className="form-control" name='number' id="number" onChange={handleChange} />
                                 {errors.number && <div className="text-danger">{errors.number}</div>}
-                            </div>
-                        </div>
-                        <div className="col-md-6">
-                            <div className="mb-3">
-                                <label htmlFor="price_per_night" className="form-label">Số tiền cho 1 đêm</label>
-                                <input value={formData.price_per_night} type="number" className="form-control" name='price_per_night' id="price_per_night" onChange={handleChange} />
-                                {errors.price_per_night && <div className="text-danger">{errors.price_per_night}</div>}
-                            </div>
-                        </div>
-                        <div className="col-md-6">
-                            <div className="mb-3">
-                                <label htmlFor="defaul_people" className="form-label">Số người mặc định</label>
-                                <input value={formData.defaul_people} type="number" className="form-control" name='defaul_people' id="defaul_people" onChange={handleChange} />
-                                {errors.defaul_people && <div className="text-danger">{errors.defaul_people}</div>}
                             </div>
                         </div>
                         <div className="col-md-6">

@@ -1,0 +1,10 @@
+.button{
+    width: 70%;
+    background-color: var(--BackgrountColors3);
+    color: var(--TextColor2);
+    border-color: var(--TextColor2);
+}
+.button:hover{
+    color: var(--TextColor3);
+    border-color: var(--TextColor3);
+}

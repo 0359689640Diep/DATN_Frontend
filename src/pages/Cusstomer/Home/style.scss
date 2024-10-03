@@ -35,5 +35,10 @@
             color: var(--BackgrountColors2);
             border-color: var(--BackgrountColors2);
         }
+        img{
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+        }
     }
 }

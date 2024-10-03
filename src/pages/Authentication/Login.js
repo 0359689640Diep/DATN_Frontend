@@ -1,18 +1,26 @@
 import Modal from 'react-bootstrap/Modal';
-import { useState } from 'react';
-import { Notification } from '../../../components/Response';
-import { postRoom } from '../../../services/Admin/Room';
-import ValidateRoom from '../../../validation/Room';
+import { useState } from "react";
+import className from '../../components/ClassName';
+import style from "./style.scss";
+import { ValidateLogin } from '../../validation/Authentication';
+import { useNavigate } from 'react-router-dom';
+import LoginRequset from '../../services/Authentication/Login';
+import { Notification } from '../../components/Response';
 
 
-const ModalAdd = (props) => {
-    const { show, handleClose, onDataUpdated, roomTypes , statusData} = props;
+const Login = (props) => {
+
+    const cx = className(style);
+    const navigate = useNavigate();
+
+    const { show, handleClose, onDataUpdated } = props;
 
     const [formData, setFormData] = useState({
-        number: "",
-        room_type_id: "",
-    })
-    const [errors, setErrors] = useState({}); // State lưu lỗi
+        email: '',
+        password: '',
+    });
+
+    const [errors, setErrors] = useState({});
 
     // lắng nghe sự kiện change của 1 thẻ
     const handleChange = (e) => {
@@ -25,7 +33,7 @@ const ModalAdd = (props) => {
         }));
 
         // Xác thực toàn bộ form nhưng chỉ cập nhật lỗi cho trường hiện tại
-        const { error } = ValidateRoom.validate({ ...formData, [name]: value }, { abortEarly: false });
+        const { error } = ValidateLogin.validate({ ...formData, [name]: value }, { abortEarly: false });
 
 
         if (!error) {
@@ -60,7 +68,7 @@ const ModalAdd = (props) => {
     const handleSubmitAdd = async (e) => {
         e.preventDefault();
 
-        const { error } = ValidateRoom.validate(formData, { abortEarly: false });
+        const { error } = ValidateLogin.validate(formData, { abortEarly: false });
         if (error) {
             const newErrors = error.details.reduce((acc, curr) => {
                 acc[curr.path[0]] = curr.message;
@@ -69,17 +77,38 @@ const ModalAdd = (props) => {
             setErrors(newErrors); // Cập nhật tất cả lỗi
         } else {
             setErrors({}); // Xóa hết lỗi nếu tất cả đều hợp lệ
-            const response = await postRoom(formData);
+            const response = await LoginRequset(formData);
             switch (response.status) {
-                case 201:
+                case 200:
                     Notification("success", response.data.message);
                     handleClose();
                     setFormData({
-                        number: "",
-                        room_type_id: "",
-                        status_id: "",
+                        email: '',
+                        password: '',
                     });
-                    onDataUpdated();
+                    let redirect = "";
+                    switch (response.data.role) {
+                        case 1:
+                            redirect = "/admin";
+                            break;
+                        case 2:
+                            // lễ tân
+                            redirect = "/receptionist";
+                            break;
+                        case 3:
+                            // quản lý
+                            redirect = "/manage";
+                            break;
+                        case 4:
+                            // khách hàng
+                            redirect = "/";
+                            break;
+                        default:
+                            break;
+                    }
+                    navigate(redirect);
+                    localStorage.setItem("accessToken", response.data.access_token);
+                    // onDataUpdated();
                     break;
                 case 422:
                     // Lấy lỗi từ response và hiển thị cho các trường tương ứng
@@ -107,63 +136,35 @@ const ModalAdd = (props) => {
     };
 
     return (
-        <Modal size="lg" show={show} onHide={handleClose} aria-labelledby="contained-modal-title-vcenter" centered>
-            <Modal.Header closeButton>
-                <Modal.Title id="contained-modal-title-vcenter">
-                    Thêm phòng
+        <Modal fullscreen="xxl-down" show={show} onHide={handleClose} aria-labelledby="contained-modal-title-vcenter" centered>
+            <Modal.Header closeButton className="justify-content-center">
+                <Modal.Title id="contained-modal-title-vcenter" className="w-100 text-center">
+                    Đăng nhập tài khoản
                 </Modal.Title>
             </Modal.Header>
             <form className="modal-content bg-light-subtle" onSubmit={handleSubmitAdd}>
                 <Modal.Body>
                     <div className="row">
-                        <div className="col-md-6">
+                        <div className="col-md-12">
                             <div className="mb-3">
-                                <label htmlFor="number" className="form-label">Số phòng</label>
-                                <input value={formData.number} type="number" className="form-control" name='number' id="number" onChange={handleChange} />
-                                {errors.number && <div className="text-danger">{errors.number}</div>}
-                            </div>
-                        </div>
-                        <div className="col-md-6">
-                            <div className="mb-3">
-                                <label htmlFor="room_type_id" className="form-label">Loại phòng</label>
-                                <select value={formData.room_type_id} className="form-control rounded" name='room_type_id' id="room_type_id" onChange={handleChange}>
-                                    <option value="">Chọn loại phòng</option>
-                                    {roomTypes.map((roomType) => (
-                                        <option key={roomType.id} value={roomType.id}>
-                                            {roomType.type}
-                                        </option>
-                                    ))}
-                                </select>
-                                {errors.room_type_id && <div className="text-danger">{errors.room_type_id}</div>}
+                                <input value={formData.email} type="email" className="form-control" placeholder='Nhập email' name='email' id="email" onChange={handleChange} />
+                                {errors.email && <div className="text-danger">{errors.email}</div>}
                             </div>
                         </div>
                         <div className="col-md-12">
                             <div className="mb-3">
-                                <label htmlFor="status_id" className="form-label">Trạng thái</label>
-                                <select value={formData.status_id} className="form-control rounded" name='status_id' id="status_id" onChange={handleChange}>
-                                    <option value="">Chọn trạng thái</option>
-                                    {statusData.map((status) => (
-                                        <option
-                                            key={status.id}
-                                            value={status.id}
-                                            style={{ color: status.color }} // Thêm style vào thẻ option
-                                        >
-                                            {status.name}
-                                        </option>
-                                    ))}
-                                </select>
-                                {errors.status_id && <div className="text-danger">{errors.status_id}</div>}
+                                <input value={formData.password} type="password" className="form-control" placeholder='Nhập mật khẩu' name='password' id="password" onChange={handleChange} />
+                                {errors.password && <div className="text-danger">{errors.password}</div>}
                             </div>
                         </div>
                     </div>
                 </Modal.Body>
                 <Modal.Footer className="d-flex justify-content-center">
-                    <button type="button" className="btn btn-outline-secondary" onClick={handleClose}>Hủy</button>
-                    <button type="submit" className="btn btn-primary">Thêm</button>
+                    <button type="submit" className={`${cx("button")} btn`}>Đăng nhập ngay</button>
                 </Modal.Footer>
             </form>
         </Modal>
     )
 }
 
-export default ModalAdd;
+export default Login;

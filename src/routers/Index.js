@@ -1,7 +1,6 @@
 import ListRoom from "../pages/Admin/Room/Index";
 import RoomType from "../pages/Admin/RoomType/Index";
 import HomeCustomer from "../pages/Cusstomer/Home";
-import Login from "../pages/Cusstomer/Login";
 import Home from '../pages/Admin/Home';
 
 
@@ -9,10 +8,6 @@ import Home from '../pages/Admin/Home';
 const pulicRouter = [
     {
         path: "/", component: HomeCustomer,
-    },
-    {
-        path: "/login", component: Login,
-
     },
     {
         path: "/register", component: "Register",

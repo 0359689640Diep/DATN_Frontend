@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { images } from "../../asses";
 
 export default function Headers() {
     const [display, setDisplay] = useState("d-none");
@@ -14,8 +15,8 @@ export default function Headers() {
         <header className="d-flex justify-content-between align-items-center sticky-top px-4 py-2 border-bottom" style={{ position: "relative" }}>
             <a href="/admin" className="text-decoration-none">
                 <div className="d-flex align-items-center">
-                    <img alt="Logo" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" className="img-thumbnail" width="50" />
-                    <p className="logo-text fs-8 ms-2 my-2 fw-bolder d-none d-sm-block text-center">HOTEL BOOKING</p>
+                    <img alt="Logo" src={images.logo} className="img-thumbnail" width="200" />
+                    <p className="logo-text fs-8 ms-2 my-2 fw-bolder d-none d-sm-block text-center">HOTEL HENRY</p>
                 </div>
             </a>
 
@@ -23,7 +24,7 @@ export default function Headers() {
                 <div className="d-flex align-items-center">
                     <img
                         alt="Logo"
-                        src="https://lh3.googleusercontent.com/a/ACg8ocKknPL49jY02ZWmG-duQTzancX98xa16aGRHDYqqjF0v5jo_imz=s96-c"
+                        src={images.logo}
                         className="rounded-circle"
                         width="40"
                         style={{ borderRadius: "50%" }}

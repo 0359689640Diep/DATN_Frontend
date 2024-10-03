@@ -11,6 +11,9 @@ const ModalEdit = (props) => {
     const [imageOld, setImageOld] = useState([]);
     const [formData, setFormData] = useState({
         type: "",
+        price_per_night: "",
+        defaul_people: "",
+        description: "",
         images: [],
         image_id: [],
     }); 
@@ -19,6 +22,9 @@ const ModalEdit = (props) => {
         if (dataEdit) {
             setFormData({
                 type: dataEdit.type || "",
+                price_per_night: dataEdit.price_per_night || "",
+                defaul_people: dataEdit.defaul_people || "",
+                description: dataEdit.description || "",
             });
             setImageOld(dataEdit.room_images || [])
             setId(dataEdit.id);
@@ -103,12 +109,16 @@ const ModalEdit = (props) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         const formDataToSubmit = new FormData();
         formDataToSubmit.append('type', formData.type);
-        console.log(formData.images);
+        formDataToSubmit.append('price_per_night', formData.price_per_night);
+        formDataToSubmit.append('defaul_people', formData.defaul_people);
+        formDataToSubmit.append('description', formData.description);
+
+        // Nếu có file ảnh, thêm vào formDataToSubmit
         if(formData.images && formData.image_id){
             formData.images.forEach((image, index) => {
-                console.log(image);
                 formDataToSubmit.append(`images[${index}]`, image); // Đính kèm file ảnh
             });
             formData.image_id.forEach((id) => {
@@ -154,6 +164,20 @@ const ModalEdit = (props) => {
                                 {errors.type && <div className="text-danger">{errors.type}</div>}
                             </div>
                         </div>
+                        <div className="col-md-6">
+                            <div className="mb-3">
+                                <label htmlFor="price_per_night" className="form-label">Số tiền cho 1 đêm</label>
+                                <input value={formData.price_per_night} type="number" className="form-control" name='price_per_night' id="price_per_night" onChange={handleChange} />
+                                {errors.price_per_night && <div className="text-danger">{errors.price_per_night}</div>}
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                            <div className="mb-3">
+                                <label htmlFor="defaul_people" className="form-label">Số người mặc định</label>
+                                <input value={formData.defaul_people} type="number" className="form-control" name='defaul_people' id="defaul_people" onChange={handleChange} />
+                                {errors.defaul_people && <div className="text-danger">{errors.defaul_people}</div>}
+                            </div>
+                        </div>
                         <div className="col-md-12">
                             <div className="image-preview d-flex justify-content-around flex-wrap">
                                 {imageOld.map((item, index) => (
@@ -168,6 +192,12 @@ const ModalEdit = (props) => {
                                         {errors[item.id] && <div className="text-danger">{errors[item.id]}</div>}
                                     </div>
                                 ))}
+                            </div>
+                        </div>
+                        <div className="col-md-12">
+                            <div className="form-floating">
+                                <textarea onChange={handleChange} style = {{height: "140px"}} value={formData.description} className="form-control" placeholder="Viết mô tả của bạn vềf loại phòng này" name="description" ></textarea>
+                                <label htmlFor="floatingTextarea2">Mô tả </label>
                             </div>
                         </div>
                     </div>
