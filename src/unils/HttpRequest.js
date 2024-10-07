@@ -77,12 +77,11 @@ export const get = async (api, tokens = false, option = {}) => {
         const response = await httpRequest.get(api, {
             ...option, // Bao gồm tất cả option được truyền vào, bao gồm cả params
         });
-
         // Trả về dữ liệu từ response, cùng với mã lỗi 200 để biểu thị thành công
         return {
             status: response.status || 200,
             data: response.data.data,
-            message: 'Success'
+            message: response.data.message
         };
     } catch (error) {
         // Xử lý lỗi và trả về thông tin lỗi kèm theo mã lỗi và thông báo

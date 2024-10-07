@@ -8,3 +8,17 @@
     color: var(--TextColor3);
     border-color: var(--TextColor3);
 }
+
+.text{
+    color: var(--TextColor5);
+    font-size: 18px;
+    margin-top: 10%;
+}
+.forgot-password-verification{
+    font-size: 14px;
+    color: var(--TextColor5);
+}
+.forgot-password-verification:hover{
+    color: var(--TextColor3);
+    cursor: pointer;
+}

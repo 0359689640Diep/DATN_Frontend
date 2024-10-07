@@ -4,8 +4,9 @@ import className from '../../components/ClassName';
 import style from "./style.scss";
 import { ValidateLogin } from '../../validation/Authentication';
 import { useNavigate } from 'react-router-dom';
-import LoginRequset from '../../services/Authentication/Login';
+import { LoginRequset } from '../../services/Authentication';
 import { Notification } from '../../components/Response';
+import ForgotPassword from './ForgotPassword';
 
 
 const Login = (props) => {
@@ -13,7 +14,13 @@ const Login = (props) => {
     const cx = className(style);
     const navigate = useNavigate();
 
+    const [isShowModalForgotPassword, setShowModalForgotPassword] = useState(false);
+
     const { show, handleClose, onDataUpdated } = props;
+    const handleForgotPasswordClick = () => {
+        // Mở modal Forgot Password khi click
+        setShowModalForgotPassword(true);
+    };
 
     const [formData, setFormData] = useState({
         email: '',
@@ -135,35 +142,52 @@ const Login = (props) => {
         }
     };
 
+    const handleCloseForgotPassword = () => {
+        setShowModalForgotPassword(false);
+    }
+
     return (
-        <Modal fullscreen="xxl-down" show={show} onHide={handleClose} aria-labelledby="contained-modal-title-vcenter" centered>
-            <Modal.Header closeButton className="justify-content-center">
-                <Modal.Title id="contained-modal-title-vcenter" className="w-100 text-center">
-                    Đăng nhập tài khoản
-                </Modal.Title>
-            </Modal.Header>
-            <form className="modal-content bg-light-subtle" onSubmit={handleSubmitAdd}>
-                <Modal.Body>
-                    <div className="row">
-                        <div className="col-md-12">
-                            <div className="mb-3">
-                                <input value={formData.email} type="email" className="form-control" placeholder='Nhập email' name='email' id="email" onChange={handleChange} />
-                                {errors.email && <div className="text-danger">{errors.email}</div>}
+        <>
+            <Modal fullscreen="xxl-down" show={show} onHide={handleClose} aria-labelledby="contained-modal-title-vcenter" centered>
+                <Modal.Header closeButton className="justify-content-center">
+                    <Modal.Title id="contained-modal-title-vcenter" className="w-100 text-center">
+                        Đăng nhập tài khoản
+                    </Modal.Title>
+                </Modal.Header>
+                <form className="modal-content bg-light-subtle" onSubmit={handleSubmitAdd}>
+                    <Modal.Body>
+                        <div className="row">
+                            <div className="col-md-12">
+                                <div className="mb-3">
+                                    <input value={formData.email} type="email" className="form-control" placeholder='Nhập email' name='email' id="email" onChange={handleChange} />
+                                    {errors.email && <div className="text-danger">{errors.email}</div>}
+                                </div>
+                            </div>
+                            <div className="col-md-12">
+                                <div className="mb-3">
+                                    <input value={formData.password} type="password" className="form-control" placeholder='Nhập mật khẩu' name='password' id="password" onChange={handleChange} />
+                                    {errors.password && <div className="text-danger">{errors.password}</div>}
+                                </div>
+                            </div>
+                            <div className="col-md-12">
+                                <div className="mb-3">
+                                    <i onClick={handleForgotPasswordClick} className={`${cx("forgot-password-verification")}`}>Bạn không nhớ mật khẩu của mình ? </i>
+                                </div>
                             </div>
                         </div>
-                        <div className="col-md-12">
-                            <div className="mb-3">
-                                <input value={formData.password} type="password" className="form-control" placeholder='Nhập mật khẩu' name='password' id="password" onChange={handleChange} />
-                                {errors.password && <div className="text-danger">{errors.password}</div>}
-                            </div>
-                        </div>
-                    </div>
-                </Modal.Body>
-                <Modal.Footer className="d-flex justify-content-center">
-                    <button type="submit" className={`${cx("button")} btn`}>Đăng nhập ngay</button>
-                </Modal.Footer>
-            </form>
-        </Modal>
+                    </Modal.Body>
+                    <Modal.Footer className="d-flex justify-content-center">
+                        <button type="submit" className={`${cx("button")} btn`}>Đăng nhập ngay</button>
+                    </Modal.Footer>
+                </form>
+            </Modal>
+            {isShowModalForgotPassword && (
+                <ForgotPassword
+                    show={isShowModalForgotPassword}
+                    handleCloseModalForgotPassword={handleCloseForgotPassword}
+                />
+            )}
+        </>
     )
 }
 

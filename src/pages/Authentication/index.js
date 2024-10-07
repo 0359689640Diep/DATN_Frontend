@@ -1,13 +1,15 @@
-// Authentication.js
 import { useContext } from "react";
 import { AuthContext } from "./AuthContext";
 import Login from "./Login";
+import Register from "./Register";
 
 const Authentication = () => {
-    const { setShowModalLogin, setToken } = useContext(AuthContext);
+    const { isShowModalLogin, isShowModalRegister, setShowModalLogin, setShowModalRegister,  setToken } = useContext(AuthContext);
 
     const handleClose = () => {
         setShowModalLogin(false);
+        setShowModalRegister(false); 
+
     };
 
     const handleLoginSuccess = (token) => {
@@ -15,12 +17,27 @@ const Authentication = () => {
         setShowModalLogin(false); // Đóng modal sau khi đăng nhập
     };
 
+    const handleRegisterSuccess = (token) => {
+        setToken(token); // Thiết lập token khi đăng ký thành công
+        setShowModalRegister(false); // Đóng modal sau khi đăng ký thành công
+    };
     return (
-        <Login
-            show={true}
-            handleClose={handleClose}
-            handleLoginSuccess={handleLoginSuccess} // Truyền hàm để xử lý đăng nhập thành công
-        />
+        <>
+            {isShowModalLogin && (
+                <Login
+                    show={isShowModalLogin}
+                    handleClose={handleClose}
+                    handleLoginSuccess={handleLoginSuccess} // Xử lý đăng nhập thành công
+                />
+            )}
+            {isShowModalRegister && (
+                <Register
+                    show={isShowModalRegister}
+                    handleClose={handleClose}
+                    handleRegisterSuccess={handleRegisterSuccess} // Xử lý đăng ký thành công
+                />
+            )}
+        </>
     );
 };
 

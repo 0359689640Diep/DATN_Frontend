@@ -3,17 +3,29 @@ import { images } from "../../asses";
 import className from "../../components/ClassName";
 import style from "./style.scss";
 import { AuthContext } from "../../pages/Authentication/AuthContext";
+import {LogoutRequset} from "../../services/Authentication";
+import { Notification } from "../../components/Response";
+import { Navigate } from "react-router-dom";
 
 const Headers = () => {
     const token = localStorage.getItem("accessToken");
     const [hiden, setHiden] = useState("d-none");
-    const { setShowModalLogin } = useContext(AuthContext);
+    const { setShowModalLogin, setShowModalRegister } = useContext(AuthContext);
     
     const handleClick = () => {
         if (hiden === "d-none") {
             setHiden("d-block");
         } else {
             setHiden("d-none");
+        }
+    }
+
+    const logoutClick = async () => {
+        const request = await LogoutRequset();
+        if(request.status === 200){
+            Notification("success", request.message);
+            localStorage.removeItem("accessToken");
+            return <Navigate to="/" replace />;
         }
     }
 
@@ -42,8 +54,11 @@ const Headers = () => {
                     {
                         token === null || token === "undefined" ?
                             <div className="col d-flex justify-content-end align-items-center">
-                                <button type="button" onClick={() => setShowModalLogin(true)} className={`${cx("button")} btn ms-2 py-1`}>Đăng nhập</button>
-                                <button type="button" onClick={() => setShowModalLogin(true)} className={`${cx("button")} btn ms-2 py-1`}>Đăng ký</button>
+                                <button type="button" onClick={() => {
+                                    setShowModalLogin(true);
+                                    setShowModalRegister(false);
+                                }} className={`${cx("button")} btn ms-2 py-1`}>Đăng nhập</button>
+                                <button type="button" onClick={() => setShowModalRegister(true)} className={`${cx("button")} btn ms-2 py-1`}>Đăng ký</button>
                             </div> :
                             <div className={`${cx("person")} col`}>
                                 <div onClick={handleClick} className={`${cx("title")} d-flex justify-content-end align-items-center position-relative`}>
@@ -67,9 +82,9 @@ const Headers = () => {
                                             <p className="ms-1">Quản lý tài khoản</p>
                                         </a>
                                     </div>
-                                    <a href="/" className={`${cx("footerContent")} d-flex justify-content-center align-items-end`}>
+                                    <div  onClick={() => logoutClick()} className={`${cx("footerContent")} d-flex justify-content-center align-items-end`}>
                                         <button type="button">Đăng xuất</button>
-                                    </a>
+                                    </div>
                                 </div>
                             </div>
 
