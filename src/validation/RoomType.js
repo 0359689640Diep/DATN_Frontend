@@ -4,9 +4,10 @@ import Joi from "joi";
 const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
 
 const ValidateRoomType = Joi.object({
-    type: Joi.string().required().messages({
+    type: Joi.string().required().max(255).messages({
         'any.required': 'Loại phòng không được để trống',
         'string.empty': "Loại phòng không được để trống",
+        'string.max': "Loại phòng phải không quá 255 ký tự",
     }),
     price_per_night: Joi.number().required().messages({
         'any.required': 'Giá phòng cho một đêm không được để trống',
@@ -39,7 +40,12 @@ const ValidateRoomType = Joi.object({
         'any.required': "Ảnh không được để trống",
     }),
     description: Joi.string().optional(),
-
+    title: Joi.string().max(255).required().messages({
+        'any.required': 'Tiêu đề không được để trống',
+        'string.empty': "Tiêu đề không được để trống",
+        'string.max': "Tiêu đề phải không quá 255 ký tự",
+    }),
+    description_detail: Joi.string().optional(),
 });
 
 export default ValidateRoomType;

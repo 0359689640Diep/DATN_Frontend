@@ -12,7 +12,9 @@ const Table = ({ data, dataRoomType, handleModalEdit }) => {
                     <th scope="col">Tiền cho 1 đêm</th>
                     <th scope="col">Số người mặc định</th>
                     <th scope="col">Ảnh</th>
+                    <th scope="col">Tiêu đề</th>
                     <th scope="col">Mô tả</th>
+                    <th scope="col">Chi tiết mô tả</th>
                     <th scope="col" className="text-center">Hành động</th>
                 </tr>
             </thead>
@@ -46,7 +48,9 @@ const Table = ({ data, dataRoomType, handleModalEdit }) => {
                                         : "Không có ảnh"} {/* Hiển thị thông báo nếu không có ảnh */}
                                 </div>
                             </td>
+                            <td style={{ wordWrap: 'break-word', whiteSpace: 'normal', width: "280px"}}>{item.title}</td>
                             <td style={{ wordWrap: 'break-word', whiteSpace: 'normal', width: "280px"}}>{item.description}</td>
+                            <td style={{ wordWrap: 'break-word', whiteSpace: 'normal', width: "280px"}}>{item.description_detail}</td>
 
                             {/* Giả sử bạn muốn hiển thị room_type.type thay vì room_type_id */}
                             <td className="text-center">

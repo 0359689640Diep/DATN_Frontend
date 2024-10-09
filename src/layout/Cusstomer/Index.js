@@ -27,10 +27,7 @@ export default function LayoutCustomer({ children }) {
             <AuthProvider>
                 <LayoutContent />
             </AuthProvider>
-            <Slibar />
-            <div style={{ padding: "1% 17%" }}>
                 {children}
-            </div>
             <Footer />
         </div>
     );

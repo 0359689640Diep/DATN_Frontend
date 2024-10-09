@@ -11,7 +11,9 @@ const ModalAdd = (props) => {
         type: "",
         price_per_night: "",
         defaul_people: "",
+        title: "",
         description: "",
+        description_detail: "",
         images: []
     });
     const [errors, setErrors] = useState({}); // State lưu lỗi
@@ -78,7 +80,6 @@ const ModalAdd = (props) => {
         e.preventDefault();
         // Xác thực toàn bộ form trước khi submit
         const { error } = ValidateRoomType.validate(formData, { abortEarly: false });
-        console.log(error);
 
         if (error) {
             const newErrors = error.details.reduce((acc, curr) => {
@@ -95,6 +96,8 @@ const ModalAdd = (props) => {
             formDataToSubmit.append('price_per_night', formData.price_per_night);
             formDataToSubmit.append('defaul_people', formData.defaul_people);
             formDataToSubmit.append('description', formData.description);
+            formDataToSubmit.append('description_detail', formData.description_detail);
+            formDataToSubmit.append('title', formData.title);
             formData.images.forEach((image, index) => {
                 formDataToSubmit.append(`images[${index}]`, image); // Đính kèm file ảnh
             });
@@ -183,12 +186,24 @@ const ModalAdd = (props) => {
                             </div>
                         </div>
                         <div className="col-md-12">
+                            <div className="mb-3">
+                                <label htmlFor="type" className="form-label">Tiêu đề</label>
+                                <input value={formData.title} type="text" className="form-control" name='title' id="type" onChange={handleChange} />
+                                {errors.title && <div className="text-danger">{errors.title}</div>}
+                            </div>
+                        </div>
+                        <div className="col-md-12 my-2">
                             <div className="form-floating">
                                 <textarea onChange={handleChange} style = {{height: "140px"}} className="form-control" placeholder="Viết mô tả của bạn vềf loại phòng này" name="description" ></textarea>
                                 <label htmlFor="floatingTextarea2">Mô tả </label>
                             </div>
                         </div>
-
+                        <div className="col-md-12">
+                            <div className="form-floating">
+                                <textarea onChange={handleChange} style = {{height: "300px"}} className="form-control" placeholder="Viết mô tả của bạn vềf loại phòng này" name="description_detail" ></textarea>
+                                <label htmlFor="floatingTextarea2">Chi tiết mô tả</label>
+                            </div>
+                        </div>
                     </div>
                 </Modal.Body>
                 <Modal.Footer className="d-flex justify-content-center">

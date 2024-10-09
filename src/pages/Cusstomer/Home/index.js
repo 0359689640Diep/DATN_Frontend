@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import className from "../../../components/ClassName";
-import style from "./style.scss";
+import style from "./style.module.scss";
 import { getRoomType } from "../../../services/Customers/RoomType";
+import Slibar from "../../../layout/Cusstomer/Slibar";
 
 const HomeCustomer = () => {
     const cx = className(style);
@@ -45,49 +46,52 @@ const HomeCustomer = () => {
     };
 
     return (
-        <div>
-            <div className="d-flex justify-content-between">
-                <div className={`${cx("cotent")}`}>
-                    <h2>Các loại phòng chúng tôi đang có</h2>
-                    <p>Nhanh tay đặt ngay, để mai sẽ lỡ</p>
+        <div >
+            <Slibar />
+            <div style={{ padding: "1% 17%" }}>
+                <div className="d-flex justify-content-between">
+                    <div className={`${cx("cotent")}`}>
+                        <h2>Các loại phòng chúng tôi đang có</h2>
+                        <p>Nhanh tay đặt ngay, để mai sẽ lỡ</p>
+                    </div>
+                    <div className="d-flex justify-content-between py-4">
+                        <select className="form-control" name="type" onChange={handleChangeFilter}>
+                            <option value="">Chọn loại phòng</option>
+                            {
+                                allData.map((item) => { // Sử dụng allData để lấy tất cả loại phòng
+                                    return <option key={item.id} value={item.id}>{item.type}</option>
+                                })
+                            }
+                        </select>
+                        <input
+                            type="number"
+                            className="form-control ms-3"
+                            onChange={handleChangeFilter}
+                            name="price_per_night"
+                            placeholder="Nhập giá bạn cần"
+                        />
+                    </div>
                 </div>
-                <div className="d-flex justify-content-between py-4">
-                    <select className="form-control" name="type" onChange={handleChangeFilter}>
-                        <option value="">Chọn loại phòng</option>
-                        {
-                            allData.map((item) => { // Sử dụng allData để lấy tất cả loại phòng
-                                return <option key={item.id} value={item.id}>{item.type}</option>
-                            })
-                        }
-                    </select>
-                    <input 
-                        type="number" 
-                        className="form-control ms-3" 
-                        onChange={handleChangeFilter} 
-                        name="price_per_night" 
-                        placeholder="Nhập giá bạn cần" 
-                    />
-                </div>
-            </div>
-            <div className={`${cx("list-product")} row`}>
-                {
-                    data.map((item, index) => {
-                        let image = item.room_images.length > 0 ? item.room_images[0] : { description: "Không có ảnh", image_url: "" };
-                        return (
-                            <div key={index} className={`${cx("product")} col-12 col-md-4 mb-3`}>
-                                <img src={image.image_url} alt={image.description} />
-                                <div>
-                                    <h3>{item.type}</h3>
-                                    <p>{item.description ?? ""}</p>
-                                    <span>Giá: {item.price_per_night ?? 0} đ / đêm</span>
-                                    <div className="d-flex justify-content-center">
-                                        <button type="button" className="btn">Đăng ký ngay</button>
+                <div className={`${cx("list-product")} row`}>
+                    {
+                        data.map((item, index) => {
+                            let image = item.room_images.length > 0 ? item.room_images[0] : { description: "Không có ảnh", image_url: "" };
+                            return (
+                                <a href={`/detail/${item.id}`} key={index} className={`${cx("product")} col-12 col-md-4 mb-3`}>
+                                    <img src={image.image_url} alt={image.description} />
+                                    <div>
+                                        <h3>{item.type}</h3>
+                                        <p>{item.description ?? ""}</p>
+                                        <span>Giá: {item.price_per_night ?? 0} đ / đêm</span>
+                                        <div className="d-flex justify-content-center">
+                                            <button type="button" className="btn">Đăng ký ngay</button>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        );
-                    })
-                }
+                                </a>
+                            );
+                        })
+                    }
+                </div>
             </div>
         </div>
     );

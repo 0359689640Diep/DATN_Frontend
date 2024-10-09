@@ -2,6 +2,7 @@ import ListRoom from "../pages/Admin/Room/Index";
 import RoomType from "../pages/Admin/RoomType/Index";
 import HomeCustomer from "../pages/Cusstomer/Home";
 import Home from '../pages/Admin/Home';
+import DetailCustomer from "../pages/Cusstomer/Detail";
 
 
 // Route sử dụng cho khách hàng
@@ -10,16 +11,7 @@ const pulicRouter = [
         path: "/", component: HomeCustomer,
     },
     {
-        path: "/register", component: "Register",
-
-    },
-    {
-        path: "/register-verification", component: "RegisterVerification",
-
-    },
-    {
-        path: "/forgot-password", component: "ForgotPassword",
-
+        path: "/detail/:id", component: DetailCustomer,
     },
 ];
 

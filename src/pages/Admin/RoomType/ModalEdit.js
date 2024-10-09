@@ -13,7 +13,9 @@ const ModalEdit = (props) => {
         type: "",
         price_per_night: "",
         defaul_people: "",
+        title: "",
         description: "",
+        description_detail: "",
         images: [],
         image_id: [],
     }); 
@@ -24,7 +26,9 @@ const ModalEdit = (props) => {
                 type: dataEdit.type || "",
                 price_per_night: dataEdit.price_per_night || "",
                 defaul_people: dataEdit.defaul_people || "",
+                title: dataEdit.title || "",
                 description: dataEdit.description || "",
+                description_detail: dataEdit.description_detail || "",
             });
             setImageOld(dataEdit.room_images || [])
             setId(dataEdit.id);
@@ -115,6 +119,9 @@ const ModalEdit = (props) => {
         formDataToSubmit.append('price_per_night', formData.price_per_night);
         formDataToSubmit.append('defaul_people', formData.defaul_people);
         formDataToSubmit.append('description', formData.description);
+        formDataToSubmit.append('description_detail', formData.description_detail);
+        formDataToSubmit.append('title', formData.title);
+
 
         // Nếu có file ảnh, thêm vào formDataToSubmit
         if(formData.images && formData.image_id){
@@ -195,9 +202,22 @@ const ModalEdit = (props) => {
                             </div>
                         </div>
                         <div className="col-md-12">
+                            <div className="mb-3">
+                                <label htmlFor="type" className="form-label">Tiêu đề</label>
+                                <input value={formData.title} type="text" className="form-control" name='title' id="type" onChange={handleChange} />
+                                {errors.title && <div className="text-danger">{errors.title}</div>}
+                            </div>
+                        </div>
+                        <div className="col-md-12 my-2">
                             <div className="form-floating">
-                                <textarea onChange={handleChange} style = {{height: "140px"}} value={formData.description} className="form-control" placeholder="Viết mô tả của bạn vềf loại phòng này" name="description" ></textarea>
+                                <textarea onChange={handleChange} value={formData.description} style = {{height: "140px"}} className="form-control" placeholder="Viết mô tả của bạn vềf loại phòng này" name="description" ></textarea>
                                 <label htmlFor="floatingTextarea2">Mô tả </label>
+                            </div>
+                        </div>
+                        <div className="col-md-12">
+                            <div className="form-floating">
+                                <textarea onChange={handleChange} value={formData.description_detail} style = {{height: "300px"}} className="form-control" placeholder="Viết mô tả của bạn vềf loại phòng này" name="description_detail" ></textarea>
+                                <label htmlFor="floatingTextarea2">Chi tiết mô tả</label>
                             </div>
                         </div>
                     </div>

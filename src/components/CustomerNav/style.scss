@@ -1,0 +1,27 @@
+.nav {
+    color: var(--TextColor3);
+
+    li:first-of-type {
+        font-size: 25px;
+
+        i {
+            font-size: 20px;
+            color: var(--TextColor3);
+
+        }
+    }
+
+    li {
+        a {
+            color: var(--TextColor3);
+            font-size: 15px;
+        }
+
+        /* Áp dụng font-size 10px cho tất cả các thẻ i */
+        i {
+            font-size: 10px;
+            color: var(--TextColor2);
+        }
+
+    }
+}
