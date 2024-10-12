@@ -1,12 +1,24 @@
+import { useEffect, useState } from "react";
 import className from "../ClassName";
 import Star from "../Star";
 import styles from "./style.module.scss";
+import { getRoomType } from "../../services/Customers/RoomType";
 
 
 
 const CustomerSlibar = () => {
     const cx = className(styles);
+    const [data, setData] = useState([]);
+    const fetchData = async () => {
+        const response = await getRoomType();
+        if (response.status === 200) {
+            setData(response.data);
+        }
+    }
 
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     return (
         <div className={cx('slibar')}>
@@ -15,55 +27,18 @@ const CustomerSlibar = () => {
             </div>
             <div className={cx('slibar-body')}>
 
-                <div className={`${cx('slibar-item')} d-flex justify-content-between`}>
-                    <img src="http://127.0.0.1:8000/storage/uploads/YqegfRNoWx6gpkkmOXEwwqoEJeNqtbw3xdBBXEKN.jpg" alt="room1" />
-                    <div className={cx('slibar-item-content')}>
-                        <h5>Loại Phòng: Phòng 1</h5>
-                        <div className={cx('star')}><Star star={5} /></div>
-                        <p>Giá: 150,000 đ</p>
+            {
+                data.map((item, index) => (
+                    <div key={index} className={`${cx('slibar-item')} d-flex justify-content-between`}>
+                        <img src={item.room_images[0].image_url} alt={item.room_images[0].description} />
+                        <div className={cx('slibar-item-content')}>
+                            <h5>Loại Phòng: {item.type}</h5>
+                            <div className={cx('star')}><Star star={item.average_rating} /></div>
+                            <p>Giá: {item.price_per_night} đ</p>
+                        </div>
                     </div>
-                </div>
-
-                <div className={`${cx('slibar-item')} d-flex justify-content-between`}>
-                    <img src="http://127.0.0.1:8000/storage/uploads/YqegfRNoWx6gpkkmOXEwwqoEJeNqtbw3xdBBXEKN.jpg" alt="room1" />
-                    <div className={cx('slibar-item-content')}>
-                        <h5>Loại Phòng: Phòng 1</h5>
-                        <div className={cx('star')}><Star star={5} /></div>
-                        <p>Giá: 150,000 đ</p>
-                    </div>
-                </div>
-                <div className={`${cx('slibar-item')} d-flex justify-content-between`}>
-                    <img src="http://127.0.0.1:8000/storage/uploads/YqegfRNoWx6gpkkmOXEwwqoEJeNqtbw3xdBBXEKN.jpg" alt="room1" />
-                    <div className={cx('slibar-item-content')}>
-                        <h5>Loại Phòng: Phòng 1</h5>
-                        <div className={cx('star')}><Star star={5} /></div>
-                        <p>Giá: 150,000 đ</p>
-                    </div>
-                </div>
-                <div className={`${cx('slibar-item')} d-flex justify-content-between`}>
-                    <img src="http://127.0.0.1:8000/storage/uploads/YqegfRNoWx6gpkkmOXEwwqoEJeNqtbw3xdBBXEKN.jpg" alt="room1" />
-                    <div className={cx('slibar-item-content')}>
-                        <h5>Loại Phòng: Phòng 1</h5>
-                        <div className={cx('star')}><Star star={5} /></div>
-                        <p>Giá: 150,000 đ</p>
-                    </div>
-                </div>
-                <div className={`${cx('slibar-item')} d-flex justify-content-between`}>
-                    <img src="http://127.0.0.1:8000/storage/uploads/YqegfRNoWx6gpkkmOXEwwqoEJeNqtbw3xdBBXEKN.jpg" alt="room1" />
-                    <div className={cx('slibar-item-content')}>
-                        <h5>Loại Phòng: Phòng 1</h5>
-                        <div className={cx('star')}><Star star={5} /></div>
-                        <p>Giá: 150,000 đ</p>
-                    </div>
-                </div>
-                <div className={`${cx('slibar-item')} d-flex justify-content-between`}>
-                    <img src="http://127.0.0.1:8000/storage/uploads/YqegfRNoWx6gpkkmOXEwwqoEJeNqtbw3xdBBXEKN.jpg" alt="room1" />
-                    <div className={cx('slibar-item-content')}>
-                        <h5>Loại Phòng: Phòng 1</h5>
-                        <div className={cx('star')}><Star star={5} /></div>
-                        <p>Giá: 150,000 đ</p>
-                    </div>
-                </div>
+                ))
+            }
             </div>
         </div>
     )
