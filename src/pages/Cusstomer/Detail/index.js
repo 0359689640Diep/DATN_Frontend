@@ -7,7 +7,6 @@ import CustomerNav from "../../../components/CustomerNav";
 import CustomerSlibar from "../../../components/CustomerSlibar";
 import Star from "../../../components/Star";
 import { getRoomTypeById } from "../../../services/Customers/RoomType";
-import { getAverageRatingType, getReviewsByIdRoomType } from "../../../services/Customers/Reviews";
 
 const DetailCustomer = () => {
     const cx = className(style);
@@ -61,7 +60,7 @@ const DetailCustomer = () => {
                             <div className={cx('star')}><Star star={dataAverageRating} /></div>
                             <p>{dataRoomType?.title ?? ""}</p>
                         </div>
-                        <button type="button" className="btn ">Đặt ngay</button>
+                        <a href={`/detail/payments/${id}`}><button type="button" className="btn ">Đặt ngay</button></a>
                     </div>
                     <div className={`${cx('main')}`}>
                         <div id="carouselExample" className="carousel slide">

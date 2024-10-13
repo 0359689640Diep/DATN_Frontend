@@ -13,7 +13,10 @@ const pulicRouter = [
     {
         path: "/detail/:id", component: DetailCustomer,
     },
-];
+    {
+        path: "/detail/payments/:id", component: DetailCustomer,
+    },
+];  
 
 const privateRouter = [
     {
