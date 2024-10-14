@@ -1,0 +1,44 @@
+.list-product{
+    .product{
+        width: 300px;
+        background-color: var(--BackgrountColors4);
+        margin: 0 10px;
+        h3{
+            font-size: 20px;
+            margin: 3% 0;
+            color: var(--TextColor2);
+        }
+        p{
+            font-size: 16px;
+            color: var(--TextColor5);
+            margin: 2% 0;
+
+        }
+        span{
+            width: 100%;
+            color: var(--TextColor3);
+            font-size: 20px;
+            margin: 2% 0;
+
+        }
+        button{
+            margin: 2% 0;
+            width: 50%;
+            height: 40px;
+            border-radius: 5px;
+            background-color: var(--BackgrountColors2);
+            color: var(--TextColor1);
+            text-align: center;
+        }
+        button:hover{
+            background-color: var(--TextColor1);
+            color: var(--BackgrountColors2);
+            border-color: var(--BackgrountColors2);
+        }
+        img{
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+        }
+    }
+}

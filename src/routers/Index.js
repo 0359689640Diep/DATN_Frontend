@@ -3,6 +3,9 @@ import RoomType from "../pages/Admin/RoomType/Index";
 import HomeCustomer from "../pages/Cusstomer/Home";
 import Home from '../pages/Admin/Home';
 import DetailCustomer from "../pages/Cusstomer/Detail";
+import BookingsCustomer from "../pages/Cusstomer/Bookings";
+import TransactionHistory from "../pages/Cusstomer/Transaction";
+import DetailTransactionHistory from "../pages/Cusstomer/Transaction/detail";
 
 
 // Route sử dụng cho khách hàng
@@ -13,15 +16,19 @@ const pulicRouter = [
     {
         path: "/detail/:id", component: DetailCustomer,
     },
-    {
-        path: "/detail/payments/:id", component: DetailCustomer,
-    },
 ];  
 
 const privateRouter = [
     {
-        path: "/admin", component: "Admin",
+        path: "/detail/payments/:id", component: BookingsCustomer,
     },
+    {
+        path: "/transaction-history", component: TransactionHistory,
+    },
+    {
+        path: "/detail-transaction-history/:id", component: DetailTransactionHistory,
+    },
+    
 ]
 // kết thúc
 

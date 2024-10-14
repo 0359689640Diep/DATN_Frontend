@@ -35,7 +35,7 @@ const Headers = () => {
             <div className="container">
                 <div className="row ">
                     <div className={`col`}>
-                        <img className={`${cx("imges")}`} src={images.logo} alt="Hotel Henry" />
+                        <a href="/"><img className={`${cx("imges")}`} src={images.logo} alt="Hotel Henry" /></a>
                     </div>
                     <div className={`${cx("nav")} col d-flex justify-content-between align-items-center`}>
                         <div className={cx("content1")}>
@@ -73,7 +73,7 @@ const Headers = () => {
                                         <div className="d-flex justify-content-center align-items-center"><strong>Vũ Điệp</strong></div>
                                     </div>
                                     <div className={`${cx("mainContent")}`}>
-                                        <a href="/" className="d-flex justify-content-start align-items-center">
+                                        <a href="/transaction-history" className="d-flex justify-content-start align-items-center">
                                             <i className="bi bi-activity"></i>
                                             <p className="ms-1">Lịch sử giao dịch</p>
                                         </a>

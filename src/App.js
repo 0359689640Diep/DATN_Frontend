@@ -17,7 +17,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LayoutAdmin from './layout/Admin/Index';
 import LayoutCustomer from './layout/Cusstomer/Index';
-import { adminRoute, pulicRouter } from './routers/Index';
+import { adminRoute, privateRouter, pulicRouter } from './routers/Index';
 import PrivateRoute from './components/PrivateRoute';
 
 
@@ -35,6 +35,23 @@ function App() {
                   key={index}
                   path={route.path}
                   element={<LayoutCustomer><Pages /></LayoutCustomer>}
+                />
+              );
+            })
+          }
+          {
+            /* Thiết lập route cho admin */
+            privateRouter.map((route, index) => {
+              const Pages = route.component;
+              return (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={
+                    <PrivateRoute>
+                      <LayoutCustomer><Pages /></LayoutCustomer>
+                    </PrivateRoute>
+                  }
                 />
               );
             })

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 
 import className from "../../../components/ClassName";
 import style from "./style.module.scss";
@@ -7,6 +7,8 @@ import CustomerNav from "../../../components/CustomerNav";
 import CustomerSlibar from "../../../components/CustomerSlibar";
 import Star from "../../../components/Star";
 import { getRoomTypeById } from "../../../services/Customers/RoomType";
+import checkToken from "../../../components/CheckToken";
+import { Notification } from "../../../components/Response";
 
 const DetailCustomer = () => {
     const cx = className(style);
@@ -47,6 +49,16 @@ const DetailCustomer = () => {
         return <div>Loading...</div>;
     }
 
+    const renderOrders = () => {
+        const token  = checkToken();
+        if (token) {
+            let url = `/detail/payments/${id}`;
+            window.location.replace(url.trim());
+        }else{
+            Notification("warning", "Vui lòng đăng nhập để sử dụng dịch vụ");
+        }
+    }
+
     // Khi dữ liệu đã sẵn sàng, hiển thị giao diện chính
     return (
         <div style={{ padding: "1% 17%" }}>
@@ -60,7 +72,7 @@ const DetailCustomer = () => {
                             <div className={cx('star')}><Star star={dataAverageRating} /></div>
                             <p>{dataRoomType?.title ?? ""}</p>
                         </div>
-                        <a href={`/detail/payments/${id}`}><button type="button" className="btn ">Đặt ngay</button></a>
+                        <button onClick={renderOrders} type="button" className="btn ">Đặt ngay</button>
                     </div>
                     <div className={`${cx('main')}`}>
                         <div id="carouselExample" className="carousel slide">

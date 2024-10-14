@@ -131,7 +131,7 @@ const Login = (props) => {
                     // Cập nhật state errors với các lỗi mới từ backend
                     setErrors(formattedErrors);
                     break;
-                case 400:
+                case 401:
                     Notification("error", response.data.message);
                     break;
                 default:

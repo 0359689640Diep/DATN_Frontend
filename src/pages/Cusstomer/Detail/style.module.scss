@@ -104,10 +104,10 @@
     }
 
     .list {
+        margin: 2% 0;
         display: flex;
         flex-wrap: nowrap;
         /* Đảm bảo không xuống dòng */
-        margin: 2% 0;
         overflow-x: auto;
         /* Hiển thị thanh cuộn ngang nếu vượt quá */
         width: 100%;

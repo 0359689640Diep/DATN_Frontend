@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom';
 const PrivateRoute = ({children}) => {
   const token = localStorage.getItem("accessToken");
   if (token === null || token === "undefined") {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/" replace />;
   }
   // Nếu có token thì render component con
   return children;

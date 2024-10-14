@@ -107,7 +107,7 @@ const ModalAdd = (props) => {
 
             switch (response.status) {
                 case 200:
-                    Notification("success", response.data.message);
+                   
                     handleClose();
                     setFormData({
                         type: "",
