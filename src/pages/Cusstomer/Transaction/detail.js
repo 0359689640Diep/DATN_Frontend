@@ -2,14 +2,22 @@ import { useEffect, useState } from "react";
 import className from "../../../components/ClassName";
 import detail from "./detail.module.scss";
 import CustomerNav from "../../../components/CustomerNav";
-import { confirmBooking, getBooking } from "../../../services/Customers/Bookings";
+import { confirmBooking, getBooking, getBookingDetail} from "../../../services/Customers/Bookings";
+import {getReviewsByIdBookings, postReviews } from "../../../services/Customers/Reviews";
 import { Notification } from "../../../components/Response";
 import { useParams } from "react-router-dom";
+import HandleStar from "../../../components/Star/HandleStar";
 
 const DetailTransactionHistory = () => {
     const cx = className(detail);
     const { id } = useParams(); // Lấy id từ URL
     const [data, setData] = useState([]); // Dữ liệu hiển thị
+    const [dataReviews, setDataReviews] = useState([]);
+    const [formData, setFormData] = useState({
+        "bookings_id": id,
+        "rating": 0,
+        "comment": ""
+    });
 
     const listNav = [
         { icon: 'house', title: 'Trang chủ', url: '/' },
@@ -20,67 +28,61 @@ const DetailTransactionHistory = () => {
 
     const fetchData = async () => {
         try {
-            const response = await getBooking();
+            const response = await getBookingDetail(id);
             if (response.status === 200) {
                 setData(response.data);
+            }
+            const responseReviewsByIdBookings = await getReviewsByIdBookings(id);
+            if (responseReviewsByIdBookings.status === 200) {
+                setDataReviews(responseReviewsByIdBookings.data);
             }
         } catch (error) {
             console.error('Error fetching room types:', error);
         }
     };
-    const orderConfirmation = async () => {
-        // Lấy các params từ URL
-        const searchParams = new URLSearchParams(window.location.search);
 
-        // Danh sách các tham số cần thiết
-        const paramNames = [
-            'vnp_Amount',
-            'vnp_BankCode',
-            'vnp_BankTranNo',
-            'vnp_CardType',
-            'vnp_OrderInfo',
-            'vnp_PayDate',
-            'vnp_ResponseCode',
-            'vnp_TmnCode',
-            'vnp_TransactionNo',
-            'vnp_TransactionStatus',
-            'vnp_TxnRef',
-            'vnp_SecureHash'
-        ];
-
-        // Tạo đối tượng params và kiểm tra sự tồn tại của các giá trị
-        const params = paramNames.reduce((acc, name) => {
-            const value = searchParams.get(name);
-            if (value) {
-                acc[name] = name === 'vnp_OrderInfo' ? decodeURIComponent(value) : value;
+    const handleStarClick = (starCount) => {
+        setFormData(
+            {
+                ...formData,
+                "rating": starCount,
             }
-            return acc;
-        }, {});
+        );
+    };
+    const handleChange = (e) => {
+        const { name, value } = e.target;
 
-        // Kiểm tra xem tất cả các tham số có tồn tại không
-        if (Object.keys(params).length === paramNames.length) {
-            const response = await confirmBooking(params, params.vnp_TxnRef);
-
-            if (response.status === 200) {
-                setData(response.data);
-                Notification("success", response.data.message);
-
-                // Xóa các tham số từ searchParams
-                paramNames.forEach(param => searchParams.delete(param));
-
-                // Cập nhật URL mà không làm mới trang
-                const newUrl = window.location.origin + window.location.pathname + '?' + searchParams.toString();
-                window.history.replaceState({}, '', newUrl);
-            }
-        }
+        // Cập nhật dữ liệu form
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
     }
 
+    const handleSubmitAdd = async (e) => {
+        e.preventDefault();
 
+        const response = await postReviews(formData);
+        switch (response.status) {
+            case 200:
+                Notification("success", response.data.message);
+                setFormData({
+                    "bookings_id": id,
+                    "rating": 0,
+                    "comment": ""
+                });
+                fetchData();
+                break;
 
+                default:
+                Notification("error", response.data.message);
+                break;
+        }
+    };
     useEffect(() => {
-        orderConfirmation();
         fetchData(); // Lấy dữ liệu ban đầu khi component render
     }, []);
+    console.log(dataReviews && dataReviews.comment  )
 
     return (
         <div style={{ padding: "1% 17%" }}>
@@ -93,31 +95,32 @@ const DetailTransactionHistory = () => {
                 <div className={cx("product")}>
                     <div className={`${cx("product-title")} d-flex align-items-center`}>
                         <span className="me-2">Mã đơn hàng: </span>
-                        <span>Phòng đơn</span>
+                        <span>{data.id}</span>
                     </div>
                     <div className={`${cx("product-title")} d-flex align-items-center`}>
                         <span className="me-2">Loại phòng: </span>
-                        <span>Phòng đơn</span>
+                        <span>{data.room_type?.type}</span>
                     </div>
                     <div className={`${cx("product-title")} d-flex align-items-center`}>
                         <span className="me-2">Giá: </span>
-                        <span>Phòng đơn</span>
+                        <span>{data.room_type?.price_per_night} đ</span>
                     </div>
                     <div className={`${cx("product-title")} d-flex align-items-center`}>
                         <span className="me-2">Tiền cọc: </span>
-                        <span>Phòng đơn</span>
+                        <span>{data.deposit_amount} đ</span>
                     </div>
                     <div className={`${cx("product-title")} d-flex align-items-center`}>
                         <span className="me-2">Phụ phí: </span>
-                        <span>Phòng đơn</span>
+                        <span>{data.surcharge} đ</span>
                     </div>
                     <div className={`${cx("product-title")} d-flex align-items-center`}>
                         <span className="me-2">Thanh toán: </span>
-                        <span>Phòng đơn</span>
+                        <span>{data.total_price} đ</span>
                     </div>
+                    <div className={cx('star')}><HandleStar star={5} onStarClick={handleStarClick} /></div>
                 </div>
                 <div className={cx("images")}>
-                    <img src="http://127.0.0.1:8000/storage/uploads/SHlMkjM3CxVauUAhpv04Rn0NgjuOKVKy1ObqchPc.jpg" alt="http://127.0.0.1:8000/storage/uploads/SHlMkjM3CxVauUAhpv04Rn0NgjuOKVKy1ObqchPc.jpg" />
+                    <img src={data.room_type?.room_images[0]?.image_url} alt={data.room_type?.room_images[0]?.description} />
                 </div>
             </div>
 
@@ -128,36 +131,25 @@ const DetailTransactionHistory = () => {
                 <thead>
                     <tr>
                         <th className="col text-center">STT</th>
-                        <th className="col text-start">Số phòng</th>
-                        <th className="col text-start">Loại phòng</th>
-                        <th className="col text-start">Thời gian đến</th>
-                        <th className="col text-start">Thời gian đi</th>
-                        <th className="col text-end">Tổng tiền</th>
-                        <th className="col text-start">Thời gian thực hiện</th>
+                        <th className="col text-start">Mã giao dịch</th>
+                        <th className="col text-end">Số tiền</th>
+                        <th className="col text-start">Phương thức</th>
+                        <th className="col text-start">Thời gian</th>
                         <th className="col text-start">Trạng thái</th>
-                        <th className="col  text-center">Hành động</th>
-
                     </tr>
                 </thead>
                 <tbody>
                     {
-                        data && data.length > 0 ?
-                            data.map((item, index) => (
+                        data.payments &&data.payments.length > 0 ?
+                        data.payments.map((item, index) => (
                                 <tr key={index}>
                                     <td className="col text-center">{index + 1}</td>
-                                    <td className="col text-start">{item.room?.number}</td>
-                                    <td className="col text-start">{item.room_type.type}</td>
-                                    <td className="col text-start">{item.check_in_date}</td>
-                                    <td className="col text-start">{item.check_out_date}</td>
-                                    <td className="col text-end">{item.total_price}</td>
-                                    <td className="col text-start">{item.created_at}</td>
+                                    <td className="col text-start">{item.code}</td>
+                                    <td className="col text-end">{item.amount} đ</td>
+                                    <td className="col text-start">{item.payment_method}</td>
+                                    <td className="col text-start">{item.payment_date}</td>
                                     <td>
-                                        <p style={{ color: item.status.color }}>{item.status.name}</p>
-                                    </td>
-                                    <td className="col  text-center">
-                                        <a href="/">
-                                            <i className="bi bi-eye"></i>
-                                        </a>
+                                        <p style={{ color: item.status_color }}>{item.status_name}</p>
                                     </td>
                                 </tr>
                             )) :
@@ -176,36 +168,26 @@ const DetailTransactionHistory = () => {
                 <thead>
                     <tr>
                         <th className="col text-center">STT</th>
-                        <th className="col text-start">Số phòng</th>
-                        <th className="col text-start">Loại phòng</th>
-                        <th className="col text-start">Thời gian đến</th>
-                        <th className="col text-start">Thời gian đi</th>
-                        <th className="col text-end">Tổng tiền</th>
-                        <th className="col text-start">Thời gian thực hiện</th>
+                        <th className="col text-start">Tên</th>
+                        <th className="col text-end">Số lượng</th>
+                        <th className="col text-end">Giá</th>
+                        <th className="col text-start">Thời gian</th>
                         <th className="col text-start">Trạng thái</th>
-                        <th className="col  text-center">Hành động</th>
 
                     </tr>
                 </thead>
                 <tbody>
                     {
-                        data && data.length > 0 ?
-                            data.map((item, index) => (
+                        data.service_booking &&data.service_booking.length > 0 ?
+                        data.service_booking.map((item, index) => (
                                 <tr key={index}>
                                     <td className="col text-center">{index + 1}</td>
-                                    <td className="col text-start">{item.room?.number}</td>
-                                    <td className="col text-start">{item.room_type.type}</td>
-                                    <td className="col text-start">{item.check_in_date}</td>
-                                    <td className="col text-start">{item.check_out_date}</td>
-                                    <td className="col text-end">{item.total_price}</td>
+                                    <td className="col text-end">{item.service_name}</td>
+                                    <td className="col text-end">{item.quanlity_service}</td>
+                                    <td className="col text-start">{item.total_price}</td>
                                     <td className="col text-start">{item.created_at}</td>
                                     <td>
-                                        <p style={{ color: item.status.color }}>{item.status.name}</p>
-                                    </td>
-                                    <td className="col  text-center">
-                                        <a href="/">
-                                            <i className="bi bi-eye"></i>
-                                        </a>
+                                        <p style={{ color: item.status_color }}>{item.status_name}</p>
                                     </td>
                                 </tr>
                             )) :
@@ -220,13 +202,17 @@ const DetailTransactionHistory = () => {
             <div className={`${cx("cotent")} text-center my-3`}>
                 <h4>Hãy cho chúng tôi biết cảm nhận của bạn</h4>
             </div>
-            <form className="modal-content bg-light-subtle">
-                <div className="col-md-12">
+            <form  onSubmit={handleSubmitAdd}>
+                <div className="col-md-12 my-4">
                     <div className="form-floating">
-                        <textarea style={{ height: "300px" }} className="form-control" placeholder="Ví dụ: Dịch vụ rất tốt tôi rất hài lòng" name="description_detail" ></textarea>
+                        <textarea style={{ height: "300px" }}
+                        className="form-control" 
+                        defaultValue={dataReviews && dataReviews.comment ? dataReviews.comment : "Ví dụ: Dịch vụ rất tốt tôi rất hài lòng" } 
+                        onChange={handleChange}
+                        name="comment" ></textarea>
                     </div>
                 </div>
-                <button type="submit" className="btn btn-primary">Gửi</button>
+                <button type="submit" className={`${cx("button")} btn`}>Gửi</button>
             </form>
         </div>
     );

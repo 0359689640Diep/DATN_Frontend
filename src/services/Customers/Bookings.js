@@ -11,6 +11,9 @@ const postBooking = async(body) => {
 const getBooking = () => {
     return httpRequest.get('customers/get-bookings', true);
 }
+const getBookingDetail = (id) => {
+    return httpRequest.get(`customers/get-bookings/${id}`, true);
+}
 const confirmBooking = async(body, id) => {
     try {   
         
@@ -22,4 +25,4 @@ const confirmBooking = async(body, id) => {
 
 
 
-export  {postBooking, getBooking, confirmBooking}
+export  {postBooking, getBooking, confirmBooking, getBookingDetail}

@@ -13,3 +13,14 @@
         }
     }
 }
+
+.button{
+    width: 30%; 
+    margin: 0 35%; 
+    padding: 1% 0;
+    border: 2px solid var(--BorderColor2);;
+}
+.button:hover{
+    border-color: var(--BorderColor);
+    color: var(--BorderColor);
+}
