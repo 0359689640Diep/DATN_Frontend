@@ -6,6 +6,7 @@ import DetailCustomer from "../pages/Cusstomer/Detail";
 import BookingsCustomer from "../pages/Cusstomer/Bookings";
 import TransactionHistory from "../pages/Cusstomer/Transaction";
 import DetailTransactionHistory from "../pages/Cusstomer/Transaction/detail";
+import Account from "../pages/Cusstomer/Account";
 
 
 // Route sử dụng cho khách hàng
@@ -28,7 +29,9 @@ const privateRouter = [
     {
         path: "/detail-transaction-history/:id", component: DetailTransactionHistory,
     },
-    
+    {
+        path: "/account", component: Account,
+    },
 ]
 // kết thúc
 

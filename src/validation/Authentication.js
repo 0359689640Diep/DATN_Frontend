@@ -1,6 +1,5 @@
 import Joi from "joi";
 
-
 const ValidateLogin = Joi.object({
     email: Joi.string().email({ tlds: { allow: false } }).required().messages({
         'string.empty': 'Email không được để trống',

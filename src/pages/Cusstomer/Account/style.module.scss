@@ -1,0 +1,41 @@
+.form {
+    border: 2px solid var(--BorderColor1);
+    width: 100%;
+    margin: 0 1%;
+
+    .form-title {
+        h4 {
+            font-size: 20px;
+            color: var(--TextColor6);
+        }
+
+        p {
+            font-size: 15px;
+            color: var(--TextColor2);
+        }
+    }
+
+    .form-content {
+        .warnings {
+            color: var(--TextColor5);
+            font-size: 13px;
+        }
+
+    }
+
+    .button {
+        background-color: var(--BackgrountColors3);
+        color: var(--TextColor2);
+        border-color: var(--TextColor2);
+        font-size: 16px;
+        width: 30%;
+        padding: 1% 0;
+    }
+
+    .button:hover {
+        cursor: pointer;
+        background-color: var(--BackgrountColors3);
+        color: var(--TextColor3);
+        border-color: var(--TextColor3);
+    }
+}

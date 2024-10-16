@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import className from "../../../components/ClassName";
 import detail from "./detail.module.scss";
 import CustomerNav from "../../../components/CustomerNav";
-import { confirmBooking, getBooking, getBookingDetail} from "../../../services/Customers/Bookings";
 import {getReviewsByIdBookings, postReviews } from "../../../services/Customers/Reviews";
 import { Notification } from "../../../components/Response";
 import { useParams } from "react-router-dom";
 import HandleStar from "../../../components/Star/HandleStar";
+import { getBookingDetail } from "../../../services/Customers/Bookings";
 
 const DetailTransactionHistory = () => {
     const cx = className(detail);
@@ -81,8 +81,7 @@ const DetailTransactionHistory = () => {
     };
     useEffect(() => {
         fetchData(); // Lấy dữ liệu ban đầu khi component render
-    }, []);
-    console.log(dataReviews && dataReviews.comment  )
+    },);
 
     return (
         <div style={{ padding: "1% 17%" }}>
@@ -117,7 +116,7 @@ const DetailTransactionHistory = () => {
                         <span className="me-2">Thanh toán: </span>
                         <span>{data.total_price} đ</span>
                     </div>
-                    <div className={cx('star')}><HandleStar star={5} onStarClick={handleStarClick} /></div>
+                    <div className={cx('star')}><HandleStar star={dataReviews.rating} onStarClick={handleStarClick} /></div>
                 </div>
                 <div className={cx("images")}>
                     <img src={data.room_type?.room_images[0]?.image_url} alt={data.room_type?.room_images[0]?.description} />
@@ -207,7 +206,7 @@ const DetailTransactionHistory = () => {
                     <div className="form-floating">
                         <textarea style={{ height: "300px" }}
                         className="form-control" 
-                        defaultValue={dataReviews && dataReviews.comment ? dataReviews.comment : "Ví dụ: Dịch vụ rất tốt tôi rất hài lòng" } 
+                        defaultValue={dataReviews.comment } 
                         onChange={handleChange}
                         name="comment" ></textarea>
                     </div>

@@ -77,7 +77,7 @@ const Headers = () => {
                                             <i className="bi bi-activity"></i>
                                             <p className="ms-1">Lịch sử giao dịch</p>
                                         </a>
-                                        <a href="/" className="d-flex justify-content-start align-items-center">
+                                        <a href="/account" className="d-flex justify-content-start align-items-center">
                                             <i className="bi bi-person-fill-gear"></i>
                                             <p className="ms-1">Quản lý tài khoản</p>
                                         </a>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Navigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import className from "../../../components/ClassName";
 import style from "./style.module.scss";
@@ -38,12 +38,23 @@ const DetailCustomer = () => {
     // Gọi các hàm API và set loading khi hoàn tất
     useEffect(() => {
         const fetchData = async () => {
-            await getDataRoomType();
-            setLoading(false); // Dữ liệu đã tải xong
+            try {
+                const data = await getDataRoomType();
+                console.log(data); // Kiểm tra dữ liệu
+                // Đảm bảo dữ liệu là một mảng trước khi sử dụng
+                if (Array.isArray(data)) {
+                    // Xử lý dữ liệu...
+                }
+            } catch (error) {
+                console.error('Error fetching room types:', error);
+            } finally {
+                setLoading(false); // Dữ liệu đã tải xong
+            }
         };
-
+    
         fetchData();
-    }, [id]);
+    },);
+    
     // Nếu đang loading, hiển thị loader hoặc giao diện chờ
     if (loading) {
         return <div>Loading...</div>;
@@ -104,7 +115,7 @@ const DetailCustomer = () => {
                             </div>
                             <div className={`${cx("price")} d-flex align-items-center`}>
                                 <span className="me-2">Giá phòng: </span>
-                                <span>{dataRoomType?.price ?? "150,000 đ"}</span>
+                                <span>{dataRoomType?.price_per_night ?? "0 "}đ</span>
                             </div>
                             <div className={`${cx("quantity")} d-flex align-items-center`}>
                                 <span className="me-2">Số lượng: </span>
