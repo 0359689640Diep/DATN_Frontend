@@ -1,19 +1,14 @@
 import Modal from 'react-bootstrap/Modal';
 import { useState } from 'react';
 import { Notification } from '../../../components/Response';
-import ValidateRoomType from '../../../validation/RoomType';
-import { postRoomType } from '../../../services/RoomType';
+import {ValidateBanner} from '../../../validation/Banner';
+import { postBannersAdmin } from '../../../services/Banner';
 
 const ModalAdd = (props) => {
     const { show, handleClose, onDataUpdated } = props;
 
     const [formData, setFormData] = useState({
-        type: "",
-        price_per_night: "",
-        defaul_people: "",
-        title: "",
-        description: "",
-        description_detail: "",
+        status_id: "",
         images: []
     });
     const [errors, setErrors] = useState({}); // State lưu lỗi
@@ -45,7 +40,7 @@ const ModalAdd = (props) => {
             [name]: name === "images" ? Array.from(files) : value, // Kiểm tra file object nếu là images
         };
 
-        const { error } = ValidateRoomType.validate(formToValidate, { abortEarly: false });
+        const { error } = ValidateBanner.validate(formToValidate, { abortEarly: false });
 
         if (!error) {
             // Nếu không có lỗi cho trường hiện tại, xóa thông báo lỗi của trường đó
@@ -79,7 +74,7 @@ const ModalAdd = (props) => {
     const handleSubmitAdd = async (e) => {
         e.preventDefault();
         // Xác thực toàn bộ form trước khi submit
-        const { error } = ValidateRoomType.validate(formData, { abortEarly: false });
+        const { error } = ValidateBanner.validate(formData, { abortEarly: false });
 
         if (error) {
             const newErrors = error.details.reduce((acc, curr) => {
@@ -92,35 +87,36 @@ const ModalAdd = (props) => {
 
             // Tạo đối tượng FormData
             const formDataToSubmit = new FormData();
-            formDataToSubmit.append('type', formData.type);
-            formDataToSubmit.append('price_per_night', formData.price_per_night);
-            formDataToSubmit.append('defaul_people', formData.defaul_people);
-            formDataToSubmit.append('description', formData.description);
-            formDataToSubmit.append('description_detail', formData.description_detail);
-            formDataToSubmit.append('title', formData.title);
+            formDataToSubmit.append('status_id', formData.status_id);
             formData.images.forEach((image, index) => {
                 formDataToSubmit.append(`images[${index}]`, image); // Đính kèm file ảnh
             });
 
 
-            const response = await postRoomType(formDataToSubmit); // Gửi formData
+            const response = await postBannersAdmin(formDataToSubmit); // Gửi formData
 
             switch (response.status) {
                 case 200:
-                   
+                    Notification("success", response.data.message);
                     handleClose();
                     setFormData({
-                        type: "",
+                        status_id: "",
                         images: []
                     });
                     onDataUpdated();
-                    Notification("success", response.data.message);
                     break;
-                case 400:
-                    Notification("warning", response.data.message);
+                case 422:
+                    Object.entries(response.data).forEach(([key, value]) => {
+
+                        setErrors((prevErrors) => ({
+                            ...prevErrors,
+                            [key]: value,  // Use [key] to dynamically assign the key
+                        }));
+                    });
+
                     break;
                 default:
-                    Notification("error", "Hệ thống đang bảo trì");
+                    Notification("warning", response.data.message);
                     break;
             }
         }
@@ -138,23 +134,13 @@ const ModalAdd = (props) => {
                     <div className="row">
                         <div className="col-md-6">
                             <div className="mb-3">
-                                <label htmlFor="type" className="form-label">Loại phòng</label>
-                                <input value={formData.type} type="text" className="form-control" name='type' id="type" onChange={handleChange} />
-                                {errors.type && <div className="text-danger">{errors.type}</div>}
-                            </div>
-                        </div>
-                        <div className="col-md-6">
-                            <div className="mb-3">
-                                <label htmlFor="price_per_night" className="form-label">Số tiền cho 1 đêm</label>
-                                <input value={formData.price_per_night} type="number" className="form-control" name='price_per_night' id="price_per_night" onChange={handleChange} />
-                                {errors.price_per_night && <div className="text-danger">{errors.price_per_night}</div>}
-                            </div>
-                        </div>
-                        <div className="col-md-6">
-                            <div className="mb-3">
-                                <label htmlFor="defaul_people" className="form-label">Số người mặc định</label>
-                                <input value={formData.defaul_people} type="number" className="form-control" name='defaul_people' id="defaul_people" onChange={handleChange} />
-                                {errors.defaul_people && <div className="text-danger">{errors.defaul_people}</div>}
+                                <label htmlFor="type" className="form-label">Chọn trạng thái</label>
+                                <select className="form-control" name='status_id' id="status_id" onChange={handleChange}>
+                                    <option >Chọn trạng thái cho tài khoản</option>
+                                    <option value="1">Hoạt động</option>
+                                    <option value="2">Ngưng hoạt động</option>
+                                </select>
+                                {errors.status_id && <div className="text-danger">{errors.status_id}</div>}
                             </div>
                         </div>
                         <div className="col-md-6">
@@ -184,25 +170,6 @@ const ModalAdd = (props) => {
                                         </button>
                                     </div>
                                 ))}
-                            </div>
-                        </div>
-                        <div className="col-md-12">
-                            <div className="mb-3">
-                                <label htmlFor="type" className="form-label">Tiêu đề</label>
-                                <input value={formData.title} type="text" className="form-control" name='title' id="type" onChange={handleChange} />
-                                {errors.title && <div className="text-danger">{errors.title}</div>}
-                            </div>
-                        </div>
-                        <div className="col-md-12 my-2">
-                            <div className="form-floating">
-                                <textarea onChange={handleChange} style = {{height: "140px"}} className="form-control" placeholder="Viết mô tả của bạn vềf loại phòng này" name="description" ></textarea>
-                                <label htmlFor="floatingTextarea2">Mô tả </label>
-                            </div>
-                        </div>
-                        <div className="col-md-12">
-                            <div className="form-floating">
-                                <textarea onChange={handleChange} style = {{height: "300px"}} className="form-control" placeholder="Viết mô tả của bạn vềf loại phòng này" name="description_detail" ></textarea>
-                                <label htmlFor="floatingTextarea2">Chi tiết mô tả</label>
                             </div>
                         </div>
                     </div>

@@ -1,4 +1,4 @@
-import * as httpRequest from '../../unils/HttpRequest';
+import * as httpRequest from '../unils/HttpRequest';
 
 const getServices = (id) => {
     return httpRequest.get('customers/get-service/'+id, true);

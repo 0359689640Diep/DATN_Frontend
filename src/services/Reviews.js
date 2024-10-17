@@ -1,4 +1,4 @@
-import * as httpRequest from '../../unils/HttpRequest';
+import * as httpRequest from '../unils/HttpRequest';
 
 const getReviews = (params) => {
     return httpRequest.get('customers/reviews', true, {params});

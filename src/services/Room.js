@@ -1,4 +1,4 @@
-import * as httpRequest from '../../unils/HttpRequest';
+import * as httpRequest from '../unils/HttpRequest';
 
 const getRoom  = async(params) => {
     const url = 'admin/rooms';

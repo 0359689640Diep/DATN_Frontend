@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import className from "../../../components/ClassName";
 import detail from "./detail.module.scss";
 import CustomerNav from "../../../components/CustomerNav";
-import {getReviewsByIdBookings, postReviews } from "../../../services/Customers/Reviews";
+import {getReviewsByIdBookings, postReviews } from "../../../services/Reviews";
 import { Notification } from "../../../components/Response";
 import { useParams } from "react-router-dom";
 import HandleStar from "../../../components/Star/HandleStar";
-import { getBookingDetail } from "../../../services/Customers/Bookings";
+import { getBookingDetail } from "../../../services/Bookings";
 
 const DetailTransactionHistory = () => {
     const cx = className(detail);

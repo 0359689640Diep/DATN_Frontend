@@ -1,6 +1,6 @@
 import { confirmAlert } from "react-confirm-alert";
 import { Notification } from "../../../components/Response";
-import { deleteRoom } from "../../../services/Admin/Room";
+import { deleteRoom } from "../../../services/Room";
 
 const Delete = (id, onDataUpdated) => {
     const handleDeleteRoom = async (id) => {

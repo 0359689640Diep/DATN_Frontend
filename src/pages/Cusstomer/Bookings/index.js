@@ -4,11 +4,11 @@ import { useParams } from "react-router-dom";
 import className from "../../../components/ClassName";
 import style from "./style.module.scss";
 import CustomerNav from "../../../components/CustomerNav";
-import { getRoomTypeById } from "../../../services/Customers/RoomType";
-import { getUsers } from "../../../services/Customers/Users";
-import { getServices } from "../../../services/Customers/Services";
+import { getRoomTypeById } from "../../../services/RoomType";
+import { getUsers } from "../../../services/Users";
+import { getServices } from "../../../services/Services";
 import ValidateOrders from "../../../validation/Orders";
-import { postBooking } from "../../../services/Customers/Bookings";
+import { postBooking } from "../../../services/Bookings";
 import { Notification } from "../../../components/Response";
 
 const BookingsCustomer = () => {
@@ -93,7 +93,7 @@ const BookingsCustomer = () => {
         };
 
         fetchData();
-    }, [id]);
+    }, );
     // Nếu đang loading, hiển thị loader hoặc giao diện chờ
     if (loading) {
         return <div>Loading...</div>;

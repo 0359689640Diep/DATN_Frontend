@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import className from "../../components/ClassName";
 import style from "./style.scss";
-import { getBanners } from "../../services/Customers/Banner";
+import { getBanners } from "../../services/Banner";
 
 
 const Slibar = () => {

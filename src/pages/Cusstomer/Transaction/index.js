@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import className from "../../../components/ClassName";
 import style from "./style.module.scss";
 import CustomerNav from "../../../components/CustomerNav";
-import { confirmBooking, getBooking } from "../../../services/Customers/Bookings";
+import { confirmBooking, getBooking } from "../../../services/Bookings";
 import { Notification } from "../../../components/Response";
 
 const TransactionHistory = () => {

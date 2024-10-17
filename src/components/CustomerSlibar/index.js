@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import className from "../ClassName";
 import Star from "../Star";
 import styles from "./style.module.scss";
-import { getRoomType } from "../../services/Customers/RoomType";
+import { getRoomType } from "../../services/RoomType";
 
 
 

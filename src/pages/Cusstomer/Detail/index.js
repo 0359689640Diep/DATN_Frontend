@@ -6,7 +6,7 @@ import style from "./style.module.scss";
 import CustomerNav from "../../../components/CustomerNav";
 import CustomerSlibar from "../../../components/CustomerSlibar";
 import Star from "../../../components/Star";
-import { getRoomTypeById } from "../../../services/Customers/RoomType";
+import { getRoomTypeById } from "../../../services/RoomType";
 import checkToken from "../../../components/CheckToken";
 import { Notification } from "../../../components/Response";
 

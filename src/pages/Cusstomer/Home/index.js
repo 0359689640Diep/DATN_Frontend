@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import className from "../../../components/ClassName";
 import style from "./style.module.scss";
-import { getRoomType } from "../../../services/Customers/RoomType";
+import { getRoomType } from "../../../services/RoomType";
 import Slibar from "../../../layout/Cusstomer/Slibar";
 
 const HomeCustomer = () => {

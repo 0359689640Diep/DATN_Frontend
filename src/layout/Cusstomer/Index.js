@@ -2,7 +2,6 @@ import { useContext } from "react";
 import Authentication from "../../pages/Authentication";
 import Footer from "./Footer";
 import Headers from "./Header";
-import Slibar from './Slibar';
 import AuthProvider, { AuthContext } from "../../pages/Authentication/AuthContext";
 const LayoutContent = () => {
     const { isShowModalLogin, isShowModalRegister, token } = useContext(AuthContext);

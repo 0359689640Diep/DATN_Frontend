@@ -14,10 +14,25 @@ export default function Sidebar() {
             ]
         },
         {
+            icon: "bi-person-gear",
+            name: "Quản lý tài khoản",
+            children: [
+                { url: "/admin/account", name: "Danh sách tài khoản" },
+            ]
+        },
+        {
             icon: "bi-box2-fill",
             name: "Quản lý đặt phòng",
             children: [
                 { url: "/dat-phong-moi", name: "Đặt phòng mới" },
+                { url: "/danh-sach-dat-phong", name: "Danh sách đặt phòng" },
+            ]
+        },
+        {
+            icon: "bi-sliders2-vertical",
+            name: "Quản lý khác",
+            children: [
+                { url: "/admin/banner", name: "Quản lý banner" },
                 { url: "/danh-sach-dat-phong", name: "Danh sách đặt phòng" },
             ]
         },

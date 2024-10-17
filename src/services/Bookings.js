@@ -1,4 +1,4 @@
-import * as httpRequest from '../../unils/HttpRequest';
+import * as httpRequest from '../unils/HttpRequest';
 
 const postBooking = async(body) => {
     try {   

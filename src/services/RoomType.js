@@ -1,4 +1,4 @@
-import * as httpRequest from '../../unils/HttpRequest';
+import * as httpRequest from '../unils/HttpRequest';
 
 const getRoomType = async (params) => {
     const response = await httpRequest.get('/admin/rooms-type/', true, {params});
@@ -13,5 +13,8 @@ const putRoomType = async (data, id) => {
     const response = await httpRequest.post(`admin/rooms-type/edit/${id}`, data);
     return response;
 }
+const getRoomTypeById = (id) => {
+    return httpRequest.get(`customers/room-type/${id}`, true,);
+}
 
-export {getRoomType, postRoomType, putRoomType}
+export {getRoomType, postRoomType, putRoomType, getRoomTypeById}

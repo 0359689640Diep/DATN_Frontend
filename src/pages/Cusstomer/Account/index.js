@@ -3,7 +3,7 @@ import className from "../../../components/ClassName";
 import style from "./style.module.scss";
 import CustomerNav from "../../../components/CustomerNav";
 import { Notification } from "../../../components/Response";
-import { getUsers, updateUsers } from "../../../services/Customers/Users";
+import { getUsers, updateUsers } from "../../../services/Users";
 
 const Account = () => {
     const cx = className(style);

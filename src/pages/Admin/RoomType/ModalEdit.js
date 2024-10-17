@@ -1,7 +1,7 @@
 import Modal from 'react-bootstrap/Modal';
 import { useEffect, useState } from 'react';
 import { Notification } from '../../../components/Response';
-import { putRoomType } from '../../../services/Admin/RoomType';
+import { putRoomType } from '../../../services/RoomType';
 import ValidateRoomType from '../../../validation/RoomType';
 
 
