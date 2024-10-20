@@ -9,6 +9,7 @@ import DetailTransactionHistory from "../pages/Cusstomer/Transaction/detail";
 import Account from "../pages/Cusstomer/Account";
 import AccountAdmin from "../pages/Admin/Account/Index";
 import Banner from "../pages/Admin/Banner/Index";
+import Service from "../pages/Admin/Service/Index";
 
 
 // Route sử dụng cho khách hàng
@@ -46,6 +47,9 @@ const adminRoute = [
     },
     {
         path: "/admin/room-type", component: RoomType,
+    },
+    {
+        path: "/admin/service", component: Service,
     },
     {
         path: "/admin/account", component: AccountAdmin,

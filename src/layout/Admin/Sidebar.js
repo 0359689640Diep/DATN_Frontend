@@ -11,6 +11,7 @@ export default function Sidebar() {
             children: [
                 { url: "/admin/room-type", name: "Loại phòng" },
                 { url: "/admin/list-room", name: "Danh sách phòng" },
+                { url: "/admin/service", name: "Quản lý dịch vụ" },
             ]
         },
         {
