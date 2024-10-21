@@ -30,7 +30,7 @@ const ListRoom = () => {
             const response = await getRoomType(); // Gọi hàm lấy loại phòng
             if (response.status >= 400 && response.status < 600) {
                 Notification("error", response.data.message);
-                if (response.status === 401) window.location.href = '/login';
+                if (response.status === 401) window.location.href = '/';
             } else {
                 setRoomTypes(response.data); // Cập nhật state sau khi có dữ liệu
             }
@@ -44,7 +44,7 @@ const ListRoom = () => {
             const response = await getStatus(); // Gọi hàm lấy loại phòng
             if (response.status >= 400 && response.status < 600) {
                 Notification("error", response.data.message);
-                if (response.status === 401) window.location.href = '/login';
+                if (response.status === 401) window.location.href = '/';
             } else {
                 setStatusData(response.data); // Cập nhật state sau khi có dữ liệu
             }
@@ -58,7 +58,7 @@ const ListRoom = () => {
         const response = await getRoom(params);
         if (response.status >= 400 && response.status < 600) {
             Notification("error", response.data.message);
-            if (response.status === 401) window.location.href = '/login';
+            if (response.status === 401) window.location.href = '/';
         } else {
             setData(response.data); // Cập nhật state sau khi có dữ liệu
         }

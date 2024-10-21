@@ -8,10 +8,7 @@ const Table = ({ data, dataRoom, handleModalEdit, handleDelete}) => {
             <thead>
                 <tr>
                     <th scope="col" className="text-center">STT</th>
-                    <th scope="col">Tên</th>
-                    <th scope="col">Giá</th>
-                    <th scope="col">Mô tả</th>
-                    <th scope="col">Loại phòng</th>
+                    <th scope="col">Tên nhân viên</th>
                     <th scope="col">Trạng thái</th>
                     <th scope="col" className="text-center">Hành động</th>
                 </tr>
@@ -27,10 +24,7 @@ const Table = ({ data, dataRoom, handleModalEdit, handleDelete}) => {
                     data.map((item, index) => (
                         <tr key={index}>
                             <td className="text-center">{index + 1}</td>
-                            <td><a href={`/admin/service/${item.id}`}>{item.name}</a></td>
-                            <td>{item.price}</td>
-                            <td>{item.description}</td>
-                            <td>{item.room_type?.type ?? ""}</td>
+                            <td>{item.name}</td>
                             <td>
                                 <p style={{ color: item.status.color }}>{item.status.name}</p>
                             </td>

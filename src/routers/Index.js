@@ -10,6 +10,8 @@ import Account from "../pages/Cusstomer/Account";
 import AccountAdmin from "../pages/Admin/Account/Index";
 import Banner from "../pages/Admin/Banner/Index";
 import Service from "../pages/Admin/Service/Index";
+import Bookings from "../pages/Admin/Bookings/Index";
+import DetailService from "../pages/Admin/DetailService/Index";
 
 
 // Route sử dụng cho khách hàng
@@ -52,10 +54,16 @@ const adminRoute = [
         path: "/admin/service", component: Service,
     },
     {
+        path: "/admin/service/:id", component: DetailService,
+    },
+    {
         path: "/admin/account", component: AccountAdmin,
     },
     {
         path: "/admin/banner", component: Banner,
+    },
+    {
+        path: "/admin/bookings", component: Bookings,
     },
 ]
 

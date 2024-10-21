@@ -3,9 +3,7 @@ import { getRoomType } from '../../../services/RoomType';
 import { Notification } from '../../../components/Response';
 import ModalAdd from './ModalAdd';
 import Table from './Table';
-import { getRoom } from '../../../services/Room';
 import ModalEdit from './ModalEdit';
-import { getStatus } from '../../../services/Status';
 import Delete from './Delete';
 import Filter from './Filter';
 import { getServiceAdmin } from '../../../services/Services';
@@ -14,7 +12,6 @@ import { getServiceAdmin } from '../../../services/Services';
 
 const Service = () => {
     const [roomTypes, setRoomTypes] = useState([]); // Lưu dữ liệu loại phòng vào state
-    const [statusData, setStatusData] = useState([]); // Lưu dữ liệu trạng thái phòng
 
     const [isShowModal, setShowModal] = useState(false);
     const [isShowModalEdit, setShowModalEdit] = useState(false);
@@ -25,47 +22,29 @@ const Service = () => {
         setShowModalEdit(false);
     }
 
-    // Gọi API để lấy dữ liệu khi component mount
-    useEffect(() => {
-        const fetchRoomTypes = async () => {
-            const response = await getRoomType(); // Gọi hàm lấy loại phòng
-            if (response.status >= 400 && response.status < 600) {
-                Notification("error", response.data.message);
-                if (response.status === 401) window.location.href = '/login';
-            } else {
-                setRoomTypes(response.data); // Cập nhật state sau khi có dữ liệu
-            }
-        };
-        fetchRoomTypes();
-    }, []);
-
-    // Gọi API để lấy dữ liệu khi component mount
-    useEffect(() => {
-        const fetchStatus = async () => {
-            const response = await getStatus(); // Gọi hàm lấy loại phòng
-            if (response.status >= 400 && response.status < 600) {
-                Notification("error", response.data.message);
-                if (response.status === 401) window.location.href = '/login';
-            } else {
-                setStatusData(response.data); // Cập nhật state sau khi có dữ liệu
-            }
-        };
-        fetchStatus();
-    }, []);
-
     const [data, setData] = useState([]);
-
+    const fetchRoomTypes = async () => {
+        const response = await getRoomType(); // Gọi hàm lấy loại phòng
+        if (response.status >= 400 && response.status < 600) {
+            Notification("error", response.data.message);
+            if (response.status === 401) window.location.href = '/';
+        } else {
+            setRoomTypes(response.data); // Cập nhật state sau khi có dữ liệu
+        }
+    };
     const fetchData = async (params = {}) => {
         const response = await getServiceAdmin(params);
         if (response.status >= 400 && response.status < 600) {
             Notification("error", response.data.message);
-            if (response.status === 401) window.location.href = '/login';
+            if (response.status === 401) window.location.href = '/';
         } else {
             setData(response.data); // Cập nhật state sau khi có dữ liệu
         }
     };
     useEffect(() => {
         fetchData();
+        fetchRoomTypes();
+
     }, []); // Chỉ gọi khi component mount
 
     const handleDelete = (id) => {
@@ -111,7 +90,6 @@ const Service = () => {
                 handleClose={handleClose}
                 onDataUpdated={fetchData}
                 roomTypes = {roomTypes}
-                statusData = {statusData}
             />
             {/* end */}
             {/* modal edit */}
@@ -120,7 +98,6 @@ const Service = () => {
                 handleClose={handleClose}
                 onDataUpdated={fetchData}
                 dataEdit={dataEdit}
-                statusData = {statusData}
                 roomTypes = {roomTypes}
             />
             {/* end */}

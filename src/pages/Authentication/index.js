@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { AuthContext } from "./AuthContext";
-import Login from "./Login";
+import Login from "./";
 import Register from "./Register";
 
 const Authentication = () => {

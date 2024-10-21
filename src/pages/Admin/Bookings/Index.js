@@ -1,29 +1,22 @@
 import { useEffect, useState } from 'react';
-import { getRoomType } from '../../../services/RoomType';
 import { Notification } from '../../../components/Response';
-import ModalAdd from './ModalAdd';
 import Table from './Table';
-import ModalEdit from './ModalEdit';
 import Filter from './Filter';
+import { getBookingAdmin } from '../../../services/Bookings';
+import ModalAdd from './ModalAdd';
+import { getRoomType } from '../../../services/RoomType';
 
-
-
-const RoomType = () => {
-
-    const [isShowModal, setShowModal] = useState(false);
-    const [isShowModalEdit, setShowModalEdit] = useState(false);
-    const [dataEdit, setDataEdit] = useState({});
-
+const Bookings = () => {
+    const [isShowModalBooking, setShowModalBooking] = useState(false);
+    const [roomTypes, setRoomTypes] = useState([]);
+    const [data, setData] = useState([]);
+    const [dataBooking, setDataBooking] = useState({});
     const handleClose = () => {
-        setShowModal(false);
-        setShowModalEdit(false);
+        setShowModalBooking(false);
     }
 
-
-    const [data, setData] = useState([]);
-
     const fetchData = async (params = {}) => {
-        const response = await getRoomType(params);
+        const response = await getBookingAdmin(params);
         if (response.status >= 400 && response.status < 600) {
             Notification("error", response.data.message);
             if (response.status === 401) window.location.href = '/';
@@ -31,7 +24,18 @@ const RoomType = () => {
             setData(response.data); // Cập nhật state sau khi có dữ liệu
         }
     };
+    const fetchRoomTypes = async () => {
+        const response = await getRoomType(); // Gọi hàm lấy loại phòng
+        if (response.status >= 400 && response.status < 600) {
+            Notification("error", response.data.message);
+            if (response.status === 401) window.location.href = '/';
+        } else {
+            setRoomTypes(response.data); // Cập nhật state sau khi có dữ liệu
+        }
+    };
+
     useEffect(() => {
+        fetchRoomTypes();
         fetchData();
     }, []); // Chỉ gọi khi component mount
 
@@ -49,42 +53,29 @@ const RoomType = () => {
                         <li>
                             <i className="bi bi-chevron-right fs-10 m-2"></i>
                         </li>
-                        <li className="fs-10"><strong>Danh sách loại phòng</strong></li>
+                        <li className="fs-10"><strong>Danh sách đặt phòng</strong></li>
                     </ol>
                 </nav>
-                <h2 className="text-bold text-body-emphasis mb-5">Danh sách loại phòng</h2>
+                <h2 className="text-bold text-body-emphasis mb-5">Danh sách đặt phòng</h2>
                 <div className="d-flex justify-content-between">
-                    <Filter fetchData={fetchData}/>
-                    <div className="mb-3 d-flex justify-content-end">
-                        <button type="button" className="btn btn-primary ms-2 d-flex justify-content-between" onClick={() => setShowModal(true)}>
-                            <i className="bi bi-plus-lg"></i>
-                            <div className="ms-2">Thêm loại phòng</div>
-                        </button>
-                    </div>
+                    <Filter fetchData={fetchData} />
                 </div>
             </div>
             {/* end */}
 
             {/* body */}
-            <Table data={data} dataRoomType={setDataEdit} handleModalEdit={setShowModalEdit} />
+            <Table data={data}  dataBooking={setDataBooking} handleModalBooking={setShowModalBooking}/>
             {/* end */}
 
             {/* modal add */}
             <ModalAdd
-                show={isShowModal}
+                show={isShowModalBooking}
                 handleClose={handleClose}
                 onDataUpdated={fetchData}
+                dataBooking={dataBooking}
+                roomTypes = {roomTypes}
             />
-            {/* end */}
-            {/* modal edit */}
-            <ModalEdit
-                show={isShowModalEdit}
-                handleClose={handleClose}
-                onDataUpdated={fetchData}
-                dataEdit={dataEdit}
-            />
-            {/* end */}
         </div>
     );
 }
-export default RoomType;
+export default Bookings;

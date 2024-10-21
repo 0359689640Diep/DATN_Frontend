@@ -40,7 +40,6 @@ const DetailCustomer = () => {
         const fetchData = async () => {
             try {
                 const data = await getDataRoomType();
-                console.log(data); // Kiểm tra dữ liệu
                 // Đảm bảo dữ liệu là một mảng trước khi sử dụng
                 if (Array.isArray(data)) {
                     // Xử lý dữ liệu...

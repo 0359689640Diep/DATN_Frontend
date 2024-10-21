@@ -25,8 +25,8 @@ export default function Sidebar() {
             icon: "bi-box2-fill",
             name: "Quản lý đặt phòng",
             children: [
-                { url: "/dat-phong-moi", name: "Đặt phòng mới" },
-                { url: "/danh-sach-dat-phong", name: "Danh sách đặt phòng" },
+                { url: "/admin/bookings/new", name: "Đặt phòng mới" },
+                { url: "/admin/bookings", name: "Danh sách đặt phòng" },
             ]
         },
         {

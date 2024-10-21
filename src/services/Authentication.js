@@ -3,7 +3,7 @@ import * as httpRequest from '../unils/HttpRequest';
 async function LoginRequset (body){
     try {   
         
-        return await httpRequest.post("/authentication/login", body);
+        return await httpRequest.post("/authentication/", body);
     } catch (error) {
         return error.response;
     }

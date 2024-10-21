@@ -8,12 +8,15 @@ const postBooking = async(body) => {
         return error.response;
     }
 }
+
 const getBooking = () => {
     return httpRequest.get('customers/get-bookings', true);
 }
+
 const getBookingDetail = (id) => {
     return httpRequest.get(`customers/get-bookings/${id}`, true);
 }
+
 const confirmBooking = async(body, id) => {
     try {   
         
@@ -23,6 +26,16 @@ const confirmBooking = async(body, id) => {
     }
 }
 
+const getBookingAdmin = (params) => {
+    return httpRequest.get('admin/bookings', true, {params});
+}
 
+const checkInBookingAdmin = async(body, id) => {
+    try {   
+        return await httpRequest.update("/admin/bookings/check-in-bookings/", body, id, true, {"Content-Type": "application/json"});
+    } catch (error) {
+        return error.response;
+    }
+}
 
-export  {postBooking, getBooking, confirmBooking, getBookingDetail}
+export  {postBooking, getBooking, confirmBooking, getBookingDetail, getBookingAdmin, checkInBookingAdmin}
