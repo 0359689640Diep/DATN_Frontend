@@ -24,7 +24,7 @@ const Table = ({ data, dataRoom, handleModalEdit, handleDelete}) => {
                     data.map((item, index) => (
                         <tr key={index}>
                             <td className="text-center">{index + 1}</td>
-                            <td>{item.name}</td>
+                            <td>{item.user?.name}</td>
                             <td>
                                 <p style={{ color: item.status.color }}>{item.status.name}</p>
                             </td>

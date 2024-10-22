@@ -50,8 +50,7 @@ export const update = async (api, data, id, tokens = false, headers = {}) => {
 
         return response;
     } catch (error) {
-        console.error("Error in update request:", error);
-        throw error; // Ném lỗi để xử lý ở nơi gọi hàm
+        return error.response;
     }
 }
 

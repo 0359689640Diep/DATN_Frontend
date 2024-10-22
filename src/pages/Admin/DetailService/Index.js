@@ -8,10 +8,11 @@ import Table from './Table';
 import ModalEdit from './ModalEdit';
 import Delete from './Delete';
 import Filter from './Filter';
-import { getServiceAdmin } from '../../../services/Services';
+import { getServiceUsersByIdService } from '../../../services/ServicesUsers';
+import { getAccount } from '../../../services/Account';
 
 const DetailService = () => {
-    const [roomTypes, setRoomTypes] = useState([]); // Lưu dữ liệu loại phòng vào state
+    const [users, setUsers] = useState([]); // Lưu dữ liệu loại phòng vào state
 
     const [isShowModal, setShowModal] = useState(false);
     const [isShowModalEdit, setShowModalEdit] = useState(false);
@@ -24,17 +25,17 @@ const DetailService = () => {
     }
 
     const [data, setData] = useState([]);
-    const fetchRoomTypes = async () => {
-        const response = await getRoomType(); // Gọi hàm lấy loại phòng
+    const fetchUsers = async () => {
+        const response = await getAccount({status_id: 1}); // Gọi hàm lấy loại phòng
         if (response.status >= 400 && response.status < 600) {
             Notification("error", response.data.message);
             if (response.status === 401) window.location.href = '/';
         } else {
-            setRoomTypes(response.data); // Cập nhật state sau khi có dữ liệu
+            setUsers(response.data); // Cập nhật state sau khi có dữ liệu
         }
     };
-    const fetchData = async (params = {}) => {
-        const response = await getServiceAdmin(params);
+    const fetchData = async (params = { }) => {
+        const response = await getServiceUsersByIdService(id, params);
         if (response.status >= 400 && response.status < 600) {
             Notification("error", response.data.message);
             if (response.status === 401) window.location.href = '/';
@@ -44,7 +45,7 @@ const DetailService = () => {
     };
     useEffect(() => {
         fetchData();
-        fetchRoomTypes();
+        fetchUsers();
 
     }, []); // Chỉ gọi khi component mount
 
@@ -70,7 +71,7 @@ const DetailService = () => {
                 </nav>
                 <h2 className="text-bold text-body-emphasis mb-5">Chi tiết dịch vụ</h2>
                 <div className="d-flex justify-content-between">
-                    <Filter fetchData={fetchData} roomTypes={roomTypes}/>
+                    <Filter fetchData={fetchData}/>
                     <div className="mb-3 d-flex justify-content-end">
                         <button type="button" className="btn btn-primary ms-2 d-flex justify-content-between" onClick={() => setShowModal(true)}>
                             <i className="bi bi-plus-lg"></i>
@@ -90,7 +91,7 @@ const DetailService = () => {
                 show={isShowModal}
                 handleClose={handleClose}
                 onDataUpdated={fetchData}
-                roomTypes = {roomTypes}
+                dataUsers = {users}
             />
             {/* end */}
             {/* modal edit */}
@@ -99,7 +100,7 @@ const DetailService = () => {
                 handleClose={handleClose}
                 onDataUpdated={fetchData}
                 dataEdit={dataEdit}
-                roomTypes = {roomTypes}
+                dataUsers = {users}
             />
             {/* end */}
         </div>

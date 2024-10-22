@@ -3,16 +3,19 @@ import { useEffect, useState } from 'react';
 import { Notification } from '../../../components/Response';
 import ValidateService from '../../../validation/Service';
 import { putServiceAdmin } from '../../../services/Services';
+import { useParams } from 'react-router-dom';
+import ValidateServiceUsers from '../../../validation/ServiceUsers';
+import { putServiceUsersAdmin } from '../../../services/ServicesUsers';
 
 
 const ModalEdit = (props) => {
-    const { show, handleClose, onDataUpdated, dataEdit,  roomTypes } = props;
+    const { show, handleClose, onDataUpdated, dataEdit,  dataUsers } = props;
     const [id, setId] = useState(0);
+    const { serviceId } = useParams();
+
     const [formData, setFormData] = useState({
-        name: "",
-        room_type_id: "",
-        description: "",
-        price: "",
+        service_id: serviceId,
+        user_id: "",
         status_id: ""
     })
 
@@ -20,10 +23,8 @@ const ModalEdit = (props) => {
     useEffect(() => {
         if (dataEdit) {
             setFormData({
-                name: dataEdit.name || "",
-                room_type_id: dataEdit.room_type_id || "",
-                description: dataEdit.description || "",
-                price: dataEdit.price || "",
+                service_id: dataEdit.service_id || "",
+                user_id: dataEdit.user_id || "",
                 status_id: dataEdit.status_id || "",
             });
             setId(dataEdit.id);
@@ -45,7 +46,7 @@ const ModalEdit = (props) => {
         }));
 
         // Xác thực toàn bộ form nhưng chỉ cập nhật lỗi cho trường hiện tại
-        const { error } = ValidateService.validate({ ...formData, [name]: value }, { abortEarly: false });
+        const { error } = ValidateServiceUsers.validate({ ...formData, [name]: value }, { abortEarly: false });
 
 
         if (!error) {
@@ -79,7 +80,7 @@ const ModalEdit = (props) => {
     // lắng nghe sự kiện submit và gửi form
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const { error } = ValidateService.validate(formData, { abortEarly: false });
+        const { error } = ValidateServiceUsers.validate(formData, { abortEarly: false });
         if (error) {
             const newErrors = error.details.reduce((acc, curr) => {
                 acc[curr.path[0]] = curr.message;
@@ -88,16 +89,14 @@ const ModalEdit = (props) => {
             setErrors(newErrors); // Cập nhật tất cả lỗi
         } else {
             setErrors({}); // Xóa hết lỗi nếu tất cả đều hợp lệ
-            const response = await putServiceAdmin(id, formData);
+            const response = await putServiceUsersAdmin(id, formData);
             switch (response.status) {
-                case 201:
+                case 200:
                     Notification("success", response.data.message);
                     handleClose();
                     setFormData({
-                        name: "",
-                        room_type_id: "",
-                        description: "",
-                        price: "",
+                        service_id: serviceId,
+                        user_id: "",
                         status_id: ""
                     });
                     onDataUpdated();
@@ -136,33 +135,19 @@ const ModalEdit = (props) => {
             </Modal.Header>
             <form className="modal-content bg-light-subtle" onSubmit={handleSubmit}>
                 <Modal.Body>
-                    <div className="row">
+                <div className="row">
                         <div className="col-md-6">
                             <div className="mb-3">
-                                <label htmlFor="name" className="form-label">Tên dịch vụ</label>
-                                <input value={formData.name} type="text" className="form-control" name='name' id="name" onChange={handleChange} />
-                                {errors.name && <div className="text-danger">{errors.name}</div>}
-                            </div>
-                        </div>
-                        <div className="col-md-6">
-                            <div className="mb-3">
-                                <label htmlFor="price" className="form-label">Giá dịch vụ</label>
-                                <input value={formData.price} type="number" className="form-control" name='price' id="price" onChange={handleChange} />
-                                {errors.price && <div className="text-danger">{errors.price}</div>}
-                            </div>
-                        </div>
-                        <div className="col-md-6">
-                            <div className="mb-3">
-                                <label htmlFor="room_type_id" className="form-label">Loại phòng</label>
-                                <select value={formData.room_type_id} className="form-control rounded" name='room_type_id' id="room_type_id" onChange={handleChange}>
-                                    <option value="">Chọn loại phòng</option>
-                                    {roomTypes.map((roomType) => (
-                                        <option key={roomType.id} value={roomType.id}>
-                                            {roomType.type}
+                                <label htmlFor="user_id" className="form-label">Nhân viên phụ trách</label>
+                                <select value={formData.user_id} className="form-control rounded" name='user_id' id="user_id" onChange={handleChange}>
+                                    <option value="">Chọn nhân viên</option>
+                                    {dataUsers.map((item) => (
+                                        <option key={item.id} value={item.id}>
+                                            {item.name}
                                         </option>
                                     ))}
                                 </select>
-                                {errors.room_type_id && <div className="text-danger">{errors.room_type_id}</div>}
+                                {errors.user_id && <div className="text-danger">{errors.user_id}</div>}
                             </div>
                         </div>
                         <div className="col-md-6">
@@ -174,12 +159,6 @@ const ModalEdit = (props) => {
                                     <option value="2">Ngưng hoạt động</option>
                                 </select>
                                 {errors.status_id && <div className="text-danger">{errors.status_id}</div>}
-                            </div>
-                        </div>
-                        <div className="col-md-12">
-                            <div className="form-floating">
-                                <textarea defaultValue={formData.description} onChange={handleChange} style={{ height: "100px" }} className="form-control" placeholder="Ví dụ: Nhà mình có 2 người lớn và 1 trẻ em....." name="description" ></textarea>
-                                <label htmlFor="floatingTextarea2">Mô tả yêu cầu</label>
                             </div>
                         </div>
                     </div>

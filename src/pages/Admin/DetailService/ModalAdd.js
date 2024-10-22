@@ -3,16 +3,17 @@ import { useState } from 'react';
 import { Notification } from '../../../components/Response';
 import ValidateService from '../../../validation/Service';
 import { postServiceAdmin } from '../../../services/Services';
-
+import { useParams } from 'react-router-dom';
+import ValidateServiceUsers from '../../../validation/ServiceUsers';
+import { postServiceUsersAdmin } from '../../../services/ServicesUsers';
 
 const ModalAdd = (props) => {
-    const { show, handleClose, onDataUpdated, roomTypes , statusData} = props;
+    const { show, handleClose, onDataUpdated, dataUsers , statusData} = props;
+    const { id } = useParams();
 
     const [formData, setFormData] = useState({
-        name: "",
-        room_type_id: "",
-        description: "",
-        price: "",
+        service_id: id,
+        user_id: "",
         status_id: ""
     })
     const [errors, setErrors] = useState({}); // State lưu lỗi
@@ -28,7 +29,7 @@ const ModalAdd = (props) => {
         }));
 
         // Xác thực toàn bộ form nhưng chỉ cập nhật lỗi cho trường hiện tại
-        const { error } = ValidateService.validate({ ...formData, [name]: value }, { abortEarly: false });
+        const { error } = ValidateServiceUsers.validate({ ...formData, [name]: value }, { abortEarly: false });
 
 
         if (!error) {
@@ -63,7 +64,7 @@ const ModalAdd = (props) => {
     const handleSubmitAdd = async (e) => {
         e.preventDefault();
 
-        const { error } = ValidateService.validate(formData, { abortEarly: false });
+        const { error } = ValidateServiceUsers.validate(formData, { abortEarly: false });
         if (error) {
             const newErrors = error.details.reduce((acc, curr) => {
                 acc[curr.path[0]] = curr.message;
@@ -72,16 +73,14 @@ const ModalAdd = (props) => {
             setErrors(newErrors); // Cập nhật tất cả lỗi
         } else {
             setErrors({}); // Xóa hết lỗi nếu tất cả đều hợp lệ
-            const response = await postServiceAdmin(formData);
+            const response = await postServiceUsersAdmin(formData);
             switch (response.status) {
-                case 201:
+                case 200:
                     Notification("success", response.data.message);
                     handleClose();
                     setFormData({
-                        name: "",
-                        room_type_id: "",
-                        description: "",
-                        price: "",
+                        service_id: id,
+                        user_id: "",
                         status_id: ""
                     });
                     onDataUpdated();
@@ -123,30 +122,16 @@ const ModalAdd = (props) => {
                     <div className="row">
                         <div className="col-md-6">
                             <div className="mb-3">
-                                <label htmlFor="name" className="form-label">Tên dịch vụ</label>
-                                <input value={formData.name} type="text" className="form-control" name='name' id="name" onChange={handleChange} />
-                                {errors.name && <div className="text-danger">{errors.name}</div>}
-                            </div>
-                        </div>
-                        <div className="col-md-6">
-                            <div className="mb-3">
-                                <label htmlFor="price" className="form-label">Giá dịch vụ</label>
-                                <input value={formData.price} type="number" className="form-control" name='price' id="price" onChange={handleChange} />
-                                {errors.price && <div className="text-danger">{errors.price}</div>}
-                            </div>
-                        </div>
-                        <div className="col-md-6">
-                            <div className="mb-3">
-                                <label htmlFor="room_type_id" className="form-label">Loại phòng</label>
-                                <select value={formData.room_type_id} className="form-control rounded" name='room_type_id' id="room_type_id" onChange={handleChange}>
-                                    <option value="">Chọn loại phòng</option>
-                                    {roomTypes.map((roomType) => (
-                                        <option key={roomType.id} value={roomType.id}>
-                                            {roomType.type}
+                                <label htmlFor="user_id" className="form-label">Nhân viên phụ trách</label>
+                                <select value={formData.user_id} className="form-control rounded" name='user_id' id="user_id" onChange={handleChange}>
+                                    <option value="">Chọn nhân viên</option>
+                                    {dataUsers.map((item) => (
+                                        <option key={item.id} value={item.id}>
+                                            {item.name}
                                         </option>
                                     ))}
                                 </select>
-                                {errors.room_type_id && <div className="text-danger">{errors.room_type_id}</div>}
+                                {errors.user_id && <div className="text-danger">{errors.user_id}</div>}
                             </div>
                         </div>
                         <div className="col-md-6">
@@ -158,12 +143,6 @@ const ModalAdd = (props) => {
                                     <option value="2">Ngưng hoạt động</option>
                                 </select>
                                 {errors.status_id && <div className="text-danger">{errors.status_id}</div>}
-                            </div>
-                        </div>
-                        <div className="col-md-12">
-                            <div className="form-floating">
-                                <textarea onChange={handleChange} style={{ height: "100px" }} className="form-control" placeholder="Ví dụ: Nhà mình có 2 người lớn và 1 trẻ em....." name="description" ></textarea>
-                                <label htmlFor="floatingTextarea2">Mô tả yêu cầu</label>
                             </div>
                         </div>
                     </div>

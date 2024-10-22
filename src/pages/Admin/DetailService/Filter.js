@@ -1,9 +1,8 @@
 import { useState } from "react";
 
-const Filter = ({ fetchData, roomTypes }) => {
+const Filter = ({ fetchData }) => {
     const [formData, setFormData] = useState({
         name: "",
-        room_type_id: "",
     })
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -22,23 +21,12 @@ const Filter = ({ fetchData, roomTypes }) => {
         fetchData();
         setFormData({
             name: "",
-            room_type_id: "",
         })
     };
     return (
         <form className="d-flex justify-content-start" onSubmit={handleSubmit}>
             <div className="mb-3">
-                <input value={formData.name} type="text" name="name" className="form-control" placeholder="Tên dịch vụ" onChange={handleChange} />
-            </div>
-            <div className="mb-3 ms-2">
-                <select value={formData.room_type_id} className="form-control rounded" name="room_type_id" onChange={handleChange}>
-                    <option value="">Loại phòng</option>
-                    {roomTypes.map((roomType) => (
-                        <option key={roomType.id} value={roomType.id}>
-                            {roomType.type}
-                        </option>
-                    ))}
-                </select>
+                <input value={formData.name} type="text" name="name" className="form-control" placeholder="Tên nhân viên" onChange={handleChange} />
             </div>
             <div className="mb-3 ms-2">
                 <button type="submit" className="btn btn-outline-primary">
