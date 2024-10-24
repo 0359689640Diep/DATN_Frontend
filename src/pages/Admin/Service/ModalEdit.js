@@ -1,7 +1,7 @@
 import Modal from 'react-bootstrap/Modal';
 import { useEffect, useState } from 'react';
 import { Notification } from '../../../components/Response';
-import ValidateService from '../../../validation/Service';
+import {ValidateService} from '../../../validation/Service';
 import { putServiceAdmin } from '../../../services/Services';
 
 
@@ -45,7 +45,7 @@ const ModalEdit = (props) => {
         }));
 
         // Xác thực toàn bộ form nhưng chỉ cập nhật lỗi cho trường hiện tại
-        const { error } = ValidateService.validate({ ...formData, [name]: value }, { abortEarly: false });
+        const { error } = {ValidateService}.validate({ ...formData, [name]: value }, { abortEarly: false });
 
 
         if (!error) {
@@ -79,7 +79,7 @@ const ModalEdit = (props) => {
     // lắng nghe sự kiện submit và gửi form
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const { error } = ValidateService.validate(formData, { abortEarly: false });
+        const { error } = {ValidateService}.validate(formData, { abortEarly: false });
         if (error) {
             const newErrors = error.details.reduce((acc, curr) => {
                 acc[curr.path[0]] = curr.message;

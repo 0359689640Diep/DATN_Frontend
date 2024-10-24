@@ -12,6 +12,7 @@ import Banner from "../pages/Admin/Banner/Index";
 import Service from "../pages/Admin/Service/Index";
 import Bookings from "../pages/Admin/Bookings/Index";
 import DetailService from "../pages/Admin/DetailService/Index";
+import DetailBooking from "../pages/Admin/DetailBooking";
 
 
 // Route sử dụng cho khách hàng
@@ -64,6 +65,9 @@ const adminRoute = [
     },
     {
         path: "/admin/bookings", component: Bookings,
+    },
+    {
+        path: "/admin/bookings/:id", component: DetailBooking,
     },
 ]
 

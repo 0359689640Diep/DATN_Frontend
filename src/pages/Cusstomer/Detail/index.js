@@ -52,7 +52,7 @@ const DetailCustomer = () => {
         };
     
         fetchData();
-    },);
+    }, []);
     
     // Nếu đang loading, hiển thị loader hoặc giao diện chờ
     if (loading) {

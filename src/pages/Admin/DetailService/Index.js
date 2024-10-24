@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { getRoomType } from '../../../services/RoomType';
 import { Notification } from '../../../components/Response';
 import ModalAdd from './ModalAdd';
 import Table from './Table';
@@ -12,8 +11,7 @@ import { getServiceUsersByIdService } from '../../../services/ServicesUsers';
 import { getAccount } from '../../../services/Account';
 
 const DetailService = () => {
-    const [users, setUsers] = useState([]); // Lưu dữ liệu loại phòng vào state
-
+    
     const [isShowModal, setShowModal] = useState(false);
     const [isShowModalEdit, setShowModalEdit] = useState(false);
     const [dataEdit, setDataEdit] = useState({});
@@ -25,6 +23,7 @@ const DetailService = () => {
     }
 
     const [data, setData] = useState([]);
+    const [users, setUsers] = useState([]); // Lưu dữ liệu loại phòng vào state
     const fetchUsers = async () => {
         const response = await getAccount({status_id: 1}); // Gọi hàm lấy loại phòng
         if (response.status >= 400 && response.status < 600) {

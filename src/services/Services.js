@@ -16,8 +16,12 @@ const putServiceAdmin = async(id, data) => {
     const url = 'admin/service/edit/';
     return await httpRequest.update(url, data, id, true, {"Content-Type": "application/json"});
 }
+const addUsersToServiceAdmin = async(data) => {
+    const url = 'admin/booking-service-users/add';
+    return await httpRequest.post(url, data, {"Content-Type": "application/json"});
+}
 const deleteServiceAdmin = async(id) => {
     const url = 'admin/service/delete';
     return await httpRequest.remote(url, id);
 }
-export  {getServices, getServiceAdmin, postServiceAdmin ,putServiceAdmin ,deleteServiceAdmin }
+export  {getServices, getServiceAdmin, postServiceAdmin ,putServiceAdmin ,deleteServiceAdmin, addUsersToServiceAdmin}

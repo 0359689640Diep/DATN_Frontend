@@ -26,9 +26,9 @@ const Table = ({ data, dataBooking, handleModalBooking }) => {
                         data.map((item, index) => (
                             <tr key={index}>
                                 <td className="col text-center">{index + 1}</td>
-                                <td className="col text-start">{item.id}</td>
+                                <td className="col text-start"><a href={`/admin/bookings/${item.id}`}>{item.id}</a></td>
                                 <td className="col text-start">{item.room?.number ?? <span className="text-danger">Chưa nhận phòng</span>}</td>
-                                <td className="col text-start"><a href={`/detail-transaction-history/${item.id}`}>{item.room_type.type}</a></td>
+                                <td className="col text-start">{item.room_type.type}</td>
                                 <td className="col text-start">{item.check_in_date}</td>
                                 <td className="col text-start">{item.check_out_date}</td>
                                 <td className="col text-end">{item.total_price} đ</td>
